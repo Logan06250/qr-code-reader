@@ -1,13 +1,14 @@
 <template>
-<div>
 	<center>
 	<h1>Inspector Gadget</h1>
 	<br>
-	<input type="button" onclick="window.location.href= '#/ManageProfile'" value="Manage Profile">
-	<input type="button" onclick="window.location.href = '#/MyReports'" value="My Reports">
+	<img src= "../assets/logo.jpg">
+	<br>
+	<br>
+	<button type="button" class="btn btn-primary" onclick="window.location.href= '#/ManageProfile'" >Manage Profile</button>
+	<button type="button" class="btn btn-primary" onclick="window.location.href= '#/MyReports'" >My Reports</button>
 	</center>
 
-</div>
 </template>
 <script>
 
