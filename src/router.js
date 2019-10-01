@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import ManageProfile from '@/components/ManageProfile'
 import MyReports from '@/components/MyReports'
+import PageNotFound from '@/components/PageNotFound'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/MyReports',
       name: 'MyReports',
       component: MyReports
+    },
+    {
+      path: '**',
+      name: 'PageNotFound',
+      component: PageNotFound
     }
   ]
 })
