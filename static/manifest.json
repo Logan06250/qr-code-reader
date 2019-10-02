@@ -13,11 +13,8 @@
       "sizes": "512x512"
     }
   ],
-<<<<<<< HEAD
-  "start_url": "./home",
-=======
+
   "start_url": "./index.html",
->>>>>>> 8a43deb0f23c0ed6ebea5751029f79fe1c8af779
   "background_color": "#FFFFFF",
   "display": "standalone",
   "scope": "/",
