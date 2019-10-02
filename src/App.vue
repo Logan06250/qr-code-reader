@@ -20,6 +20,8 @@
   import MyReports from './components/MyReports'
   import PageNotFound from './components/PageNotFound'
   import Report from './components/Report'
+  import Sectiontest from './components/Sectiontest'
+
 
   export default {
     name: 'App',
@@ -28,6 +30,7 @@
       ManageProfile,
       MyReports,
       Report,
+      Sectiontest,
       PageNotFound
     }
   }

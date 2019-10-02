@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import ManageProfile from '@/components/ManageProfile'
 import MyReports from '@/components/MyReports'
 import Report from '@/components/Report'
+import Sectiontest from '@/components/Sectiontest'
 import PageNotFound from '@/components/PageNotFound'
 
 Vue.use(Router)
@@ -26,14 +27,21 @@ export default new Router({
       component: MyReports
     },
     {
-      path: '**',
-      name: 'PageNotFound',
-      component: PageNotFound
-    },
-    {
       path: '/Report',
       name: 'Report',
       component: Report
+    },
+    {
+      path: '/Sectiontest',
+      name: 'Sectiontest',
+      component: Sectiontest
+    },
+    {
+      path: '**',
+      name: 'PageNotFound',
+      component: PageNotFound
     }
+    
+    
   ]
 })
