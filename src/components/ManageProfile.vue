@@ -34,7 +34,7 @@
       <input type="number" class="form-control" id="phone" placeholder="000000000">
     </div>
   </div>
-  
+    <button type="submit" class="btn btn-primary" onclick="window.location.href= '#/'">Submit</button>
 </form>
 </div>
 </template>
