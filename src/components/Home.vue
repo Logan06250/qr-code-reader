@@ -1,15 +1,17 @@
 <template>
-<div>
+<div id = "divSection">
 	<center>
 	<h1>Inspector Gadget</h1>
-	<br>
-	<input type="button" onclick="window.location.href= '#/ManageProfile'" value="Manage Profile">
-	<input type="button" onclick="window.location.href = '#/MyReports'" value="My Reports">
+		<br>
+		<input type="button" onclick="window.location.href= '#/ManageProfile'" value="Manage Profile">
+		<input type="button" onclick="window.location.href = '#/MyReports'" value="My Reports">
+
+
 	</center>
 
 </div>
 </template>
-<script>
+<script LANGUAGE="JavaScript">
 
 </script>
 <style>
