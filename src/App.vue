@@ -5,9 +5,10 @@
       <center>
         <div class="container-fluid">
           <form>
-              <input type="button" class="btn btn-primary" value="<-" onclick="history.back()">
+              <input type="button" class="btn btn-primary" value="<-" onclick="window.location.href= '#/'">
               <button type="button" class="btn btn-primary" onclick="window.location.href= '#/ManageProfile'" >Manage Profile</button>
               <button type="button" class="btn btn-primary" onclick="window.location.href= '#/MyReports'" >My Reports</button>
+              <button type="button" class="btn btn-primary" onclick="window.location.href= '#/Sectiontest'" >Szectiontest</button>
           </form>
         </div>
       </center>
@@ -38,15 +39,9 @@
 
 <style type="text/css">
   footer{
-
-background:#ffffff;
-
-position:absolute;
-
-bottom:0;
-
-width:100%;
-
-
-}
+    background:#ffffff;
+    position:absolute;
+    bottom:0;
+    width:100%;
+  }
 </style>

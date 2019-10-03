@@ -1,7 +1,6 @@
 <template>
 <div id = "divSection">
 	<center>
-		
 		<video id="video" width="100" height="100" autoplay></video>
 		<button id="snap">Snap Photo</button>
 		<canvas id="canvas" width="100" height="100"></canvas>
@@ -10,14 +9,15 @@
 		<img src="" id="tableBanner" />
 
 	</center>
-
 </div>
 </template>
 <script>
 
-
 document.addEventListener('DOMContentLoaded', function() {
-   		var video = document.getElementById('video');
+
+		var canvas = document.getElementById('canvas');
+		var context = canvas.getContext('2d');
+		var video = document.getElementById('video');
 
 		// Get access to the camera!
 		if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -28,26 +28,19 @@ document.addEventListener('DOMContentLoaded', function() {
 		        video.play();
 		    });
 		}
-		
-		// Elements for taking the snapshot
-		var canvas = document.getElementById('canvas');
-		var context = canvas.getContext('2d');
-		var video = document.getElementById('video');
 
 		// Trigger photo take
 		document.getElementById("snap").addEventListener("click", function() {
 			context.drawImage(video, 0, 0, 100, 100);
 		});
 
-
-
 		if ('storage' in navigator && 'estimate' in navigator.storage) {
 
 	    navigator.storage.estimate().then(function(estimate){
                console.log(`Using ${estimate.usage} out of ${estimate.quota} bytes.`);
-          });
+          	});
 
-	     if (localStorage.getItem('imgData') != null) {
+	     	if (localStorage.getItem('imgData') != null) {
 	     	var dataImage = localStorage.getItem('imgData');
 			bannerImg = document.getElementById('tableBanner');
 			bannerImg.src = "data:image/png;base64," + dataImage;
@@ -70,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			doc.save('a4.pdf')
 
 		});
-
 
 	   	function getBase64Image(img) {
 		    var canvas = document.createElement("canvas");
