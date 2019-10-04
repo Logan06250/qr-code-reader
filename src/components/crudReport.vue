@@ -2,15 +2,18 @@
 	<div>
 		<h1> Report Manager </h1>
 		<input id="textBoxNameReport" type="text" value="Enter a name"> </input>
-		<button id="createNewReport" type="button" @click="addReport()" class="btn btn-primary" >Add new report</button>
+		<button type="button" @click="addReport()" class="btn btn-outline-primary" >Add new report</button>
 
-		<div class="list-group" v-for="report in reports" :key="report._id">
-			<button type="button" class="list-group-item list-group-item-action" @click="emitReport(report)"> 
-				{{ report.name }} 
-				<span class="badge badge-light" @click="deleteReport(report)">X</span>
-			</button> 
-
-
+		<div class="container-fluid" v-for="report in reports" :key="report._id">
+			<div class="row">
+    			<div class="col">
+					<button type="button" class="btn" @click="emitReport(report)">{{ report.name }} </button>
+				</div>
+				<div class="col">
+					<button  class="btn btn-danger" @click="deleteReport(report)">X</button>
+				</div>
+			</div>
+			<br>
 		</div>
 
 	</div>
@@ -37,6 +40,8 @@
 				    _id: new Date().toISOString(),
 				    name: document.getElementById("textBoxNameReport").value,
 				    sections: [
+					    { name: "kitchen" , dimention: 5 , wall: 2 },
+					    { name: "bedRoom" , dimention: 50 , wall: 20 },
 					]
 				}
 				db.put(report).then((res) => {
