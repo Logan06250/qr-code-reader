@@ -12,7 +12,7 @@
   import Sectiontest from './components/Sectiontest'
   import SpecificReport from './components/SpecificReport'
   import CrudReport from './components/crudReport'
-
+  import speachtotext from './components/speachtotext'
 
 
   export default {
@@ -24,9 +24,10 @@
       Sectiontest,
       SpecificReport,
       CrudReport,
+      speachtotext,
       PageNotFound
     }
-  }
+  };
 </script>
 
 <style type="text/css">
