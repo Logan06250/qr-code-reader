@@ -10,7 +10,7 @@
   import MyReports from './components/MyReports'
   import PageNotFound from './components/PageNotFound'
   import Sectiontest from './components/Sectiontest'
-  import SpecificReport from './components/SpecificReport'
+  import Report from './components/report'
   import CrudReport from './components/crudReport'
 
 
@@ -22,7 +22,7 @@
       ManageProfile,
       MyReports,
       Sectiontest,
-      SpecificReport,
+      Report,
       CrudReport,
       PageNotFound
     }

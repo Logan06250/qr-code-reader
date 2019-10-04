@@ -1,12 +1,10 @@
 <template>
 	<div>
-		<h1>My reports</h1>
-
-		<div v-if="v = true">
-			<CrudReport/>
+		<div v-if="specificReport == 0">
+			<CrudReport v-on:selected="selectedReport($event)"></CrudReport>
 		</div>
 		<div v-else>
-			<SpecificReport/>
+			<Report :specificReport="specificReport"></Report>
 		</div>
 
 	</div>
@@ -17,17 +15,24 @@
 <script type="javascript">
 
 import CrudReport from './crudReport'
-import SpecificReport from './SpecificReport'
+import Report from './report'
 
 
 export default {
     name: 'App',
+    data(){
+	    return{
+		    specificReport: 0
+	   	}
+	},
     components: {
       CrudReport,
-      SpecificReport
+      Report
     },
-    data: {
-    	v: true
+    methods: {
+    	selectedReport: function (specificReport) {
+    		this.specificReport = specificReport
+    	}
     }
   }
 
