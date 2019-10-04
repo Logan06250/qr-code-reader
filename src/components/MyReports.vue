@@ -4,7 +4,7 @@
 			<CrudReport v-on:selected="selectedReport($event)"></CrudReport>
 		</div>
 		<div v-else>
-			<Report :specificReport="specificReport"></Report>
+			<Report :specificReport="specificReport" v-on:selected="goBackButton($event)"></Report>
 		</div>
 
 	</div>
@@ -32,6 +32,9 @@ export default {
     methods: {
     	selectedReport: function (specificReport) {
     		this.specificReport = specificReport
+    	},
+    	goBackButton: function (eventHandled) {
+    		this.specificReport = 0;
     	}
     }
   }
