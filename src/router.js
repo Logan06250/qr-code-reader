@@ -5,6 +5,7 @@ import ManageProfile from '@/components/ManageProfile'
 import MyReports from '@/components/MyReports'
 import Sectiontest from '@/components/Sectiontest'
 import PageNotFound from '@/components/PageNotFound'
+import speachtotext from '@/components/speachtotext'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/Sectiontest',
       name: 'Sectiontest',
       component: Sectiontest
+    },
+        {
+      path: '/speachtotext',
+      name: 'speachtotext',
+      component: speachtotext
     },
     {
       path: '**',

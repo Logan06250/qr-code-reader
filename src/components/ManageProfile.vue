@@ -27,11 +27,12 @@
   </div>
     <div class="form-group col-md-2">
       <label for="inputZip">Zip</label>
-      <input type="text" class="form-control" id="inputZip">
+      <input type="text" class="form-control" @keypress="isNumber($event)" id="inputZip"
+      placeholder="46022">
     </div>
     <div class="form-group">
       <label for="phone">Phone Number</label>
-      <input type="number" class="form-control" id="phone" placeholder="000000000">
+      <input type="text" @keypress="isNumber($event)"class="form-control" id="phone" placeholder="0 895 896 180">
     </div>
   </div>
     <button type="submit" class="btn btn-primary" onclick="window.location.href= '#/'">Submit</button>
@@ -39,7 +40,20 @@
 </div>
 </template>
 <script>
-
+export default{
+  methods: {
+    //Only numbers are allowed
+    isNumber: function(evt) {
+      evt = (evt) ? evt : window.event;
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+        evt.preventDefault();;
+      } else {
+        return true;
+      }
+    }
+  }
+};
 </script>
 <style>
 

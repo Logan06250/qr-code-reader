@@ -1,19 +1,23 @@
 <template>
 <div>
-<h1>LOL</h1>
-	<button id="try">try</button>
+	<center>
+		<h1>Generate a PDF with Hello world inside</h1>
+		<button class="btn btn-danger" @click="Generate">try me if you dare</button>
+ 	</center>
  </div>
 </template>
-<script type="javascript">
-document.addEventListener('DOMContentLoaded', function() { 
-document.getElementById("try").addEventListener("click", function() {
-	var doc = new jsPDF()
-	doc.text('Hello world!', 10, 10)
-	doc.save('a4.pdf')
-	});
-});
+<script>
+export default{
+	methods :{
+		Generate (){
+			var doc = new jsPDF()
+			var companyName = "CompanyName"
+			doc.text(one, 10, 10)
+			doc.save('I Love You.pdf')
+		}
+	}
+};
 </script>
 <style>
-
 
 </style>
