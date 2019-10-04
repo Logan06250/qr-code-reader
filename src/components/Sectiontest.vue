@@ -12,7 +12,7 @@
 </div>
 </template>
 <script>
-
+/*
 document.addEventListener('DOMContentLoaded', function() {
 
 		var canvas = document.getElementById('canvas');
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			});
 
 	}, false);
-
+*/
 </script>
 <style>
 

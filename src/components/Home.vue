@@ -1,5 +1,4 @@
 <template>
-
 	<center>
 		<div class="container-fluid">
 			<h1>Inspector Gadget</h1>

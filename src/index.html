@@ -13,16 +13,30 @@
   <link rel="icons" type="image/png" sizes="512x512"  href="/512.png">
   
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  
-  
+
+  <script src="//cdn.jsdelivr.net/npm/pouchdb@7.1.1/dist/pouchdb.min.js"></script>
+
+
 </head>
 <body>
   <div id="app"></div>
   <noscript>To run this application, JavaScript is required to be enabled.</noscript>
+  <footer>
+      <center>
+        <div class="container-fluid">
+          <form>
+              <input type="button" class="btn btn-primary" value="<-" onclick="window.location.href= '#/'">
+              <button type="button" class="btn btn-primary" onclick="window.location.href= '#/ManageProfile'" >Manage Profile</button>
+              <button type="button" class="btn btn-primary" onclick="window.location.href= '#/MyReports'" >My Reports</button>
+          </form>
+        </div>
+      </center>
+    </footer>
 </body>
 </html>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+
 
 <script> 
 
