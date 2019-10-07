@@ -11,6 +11,7 @@
   import PageNotFound from './components/PageNotFound'
   import Sectiontest from './components/Sectiontest'
   import Report from './components/report'
+  import Section from './components/section'
   import CrudReport from './components/crudReport'
   import speachtotext from './components/speachtotext'
 
@@ -23,6 +24,7 @@
       MyReports,
       Sectiontest,
       Report,
+      Section,
       CrudReport,
       speachtotext,
       PageNotFound

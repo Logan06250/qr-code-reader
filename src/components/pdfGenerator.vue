@@ -12,7 +12,7 @@ export default{
 		Generate (){
 			var doc = new jsPDF()
 			var companyName = "CompanyName"
-			doc.text(one, 10, 10)
+			doc.text("CompanyName", 10, 10)
 			doc.save('I Love You.pdf')
 		}
 	}

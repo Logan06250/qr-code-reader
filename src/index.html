@@ -15,13 +15,16 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
   <script src="//cdn.jsdelivr.net/npm/pouchdb@7.1.1/dist/pouchdb.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
 
 
 </head>
 <body>
-  <div id="app"></div>
-  <noscript>To run this application, JavaScript is required to be enabled.</noscript>
-  <footer>
+  <div id="wrapper">
+    <div id="container">
+      <div id="app"></div>
+    </div>
+    <div id="footer">
       <center>
         <div class="container-fluid">
           <form>
@@ -31,15 +34,13 @@
           </form>
         </div>
       </center>
-    </footer>
+    </div>
+  </div>
+  <noscript>To run this application, JavaScript is required to be enabled.</noscript>
 </body>
 </html>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
-
-
 <script> 
-
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
     .register('/service-worker-cache.js', { 
@@ -48,6 +49,24 @@ if ('serviceWorker' in navigator) {
       console.log('Service Worker Registered')
     })
 }
-
 </script>
+
+<style type="text/css">
+  html, body {
+    margin : 0;
+    padding : 0;
+    height : 100%;
+    background: #80aaff;
+  }
+  #container {
+    padding-bottom : 6em; 
+  }
+  #footer {
+    position : absolute;
+    width : 100%; 
+    height : 6em;
+    bottom : 0; 
+    left : 0; 
+  }
+</style>
 

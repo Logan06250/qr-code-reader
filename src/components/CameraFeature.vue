@@ -23,8 +23,8 @@
         },
         mounted() { 
         	this.video = this.$refs.video;
-    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+            if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
             this.video.srcObject = stream;
             
             this.video.play();

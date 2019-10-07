@@ -40,8 +40,6 @@
 				    _id: new Date().toISOString(),
 				    name: document.getElementById("textBoxNameReport").value,
 				    sections: [
-					    { name: "kitchen" , dimention: 5 , wall: 2 },
-					    { name: "bedRoom" , dimention: 50 , wall: 20 },
 					]
 				}
 				db.put(report).then((res) => {
@@ -72,7 +70,6 @@
 				})
 	    	},
 	    	emitReport: function(report) {
-	    		console.log(report)
 	    		this.$emit("selected", report)
 	    	}
 	    }
