@@ -1,14 +1,23 @@
 <template>
 	<div>
-		
-		<h1> <a class="list-group-item list-group-item-action" @click="eventEmitter(0)"> <= {{ specificReport.name }} report</a> </h1>
-		<input id="textBoxNameSection" type="text" value="Enter a name"> </input>
-		<button id="createNewSection" type="button" @click="addSection(specificReport)" class="btn btn-primary" >Add new section</button>
-		<div class="list-group" v-for="section in specificReport.sections">
-			<button type="button" class="list-group-item list-group-item-action" @click="eventEmitter(section)">
-				{{ section.name }} 
-				<span class="badge badge-light" @click="deleteSection(section)">X</span>
+		<h1>
+			<button type="button" class="btn" @click="goBack(0)"> <h1><=</h1>
 			</button> 
+			{{ specificReport.name }}
+		</h1>
+		<input id="textBoxNameSection" type="text" value="Enter a name"> </input>
+		<button type="button" @click="addSection(specificReport)" class="btn btn-outline-primary" >Add new section</button>
+
+		<div class="container-fluid" v-for="section in specificReport.sections">
+			<div class="row">
+				<div class="col">
+					<button type="button" class="btn">{{ section.name }} </button>
+				</div>
+				<div class="col">
+					<button class="btn btn-danger" @click="deleteSection(section)">X</button>
+				</div>
+			</div>
+			<br>
 		</div>
 	</div>
 </template>
