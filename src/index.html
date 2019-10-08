@@ -14,6 +14,8 @@
   
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+  <script src="https://kit.fontawesome.com/dec6a2602b.js" crossorigin="anonymous"></script>
+
   <script src="//cdn.jsdelivr.net/npm/pouchdb@7.1.1/dist/pouchdb.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
 
@@ -28,7 +30,7 @@
       <center>
         <div class="container-fluid">
           <form>
-              <input type="button" class="btn btn-primary" value="<-" onclick="window.location.href= '#/'">
+              <i type="button" class="btn btn-primary fas fa-home" onclick="window.location.href= '#/'" style="size: 6x"> </i>
               <button type="button" class="btn btn-primary" onclick="window.location.href= '#/ManageProfile'" >Manage Profile</button>
               <button type="button" class="btn btn-primary" onclick="window.location.href= '#/MyReports'" >My Reports</button>
           </form>
@@ -56,7 +58,7 @@ if ('serviceWorker' in navigator) {
     margin : 0;
     padding : 0;
     height : 100%;
-    background: #80aaff;
+    background: #FFFFFF
   }
   #container {
     padding-bottom : 6em; 
@@ -65,7 +67,6 @@ if ('serviceWorker' in navigator) {
     position : absolute;
     width : 100%; 
     height : 6em;
-    bottom : 0; 
     left : 0; 
   }
 </style>

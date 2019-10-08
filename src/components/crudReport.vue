@@ -53,7 +53,6 @@
 				var del = this.reports.indexOf(report)
 				db.get(report._id).then(function(doc){
 					return db.remove(doc)
-
 					console.log("Report deleted")
 				}).catch((err) => {
 					console.error(err)

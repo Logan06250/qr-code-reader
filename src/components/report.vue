@@ -1,24 +1,24 @@
 <template>
 	<div>
 		<h1>
-		<button type="button" class="btn" @click="eventEmitter(0)"> <h1><=</h1>
-			</button> 
-			{{ specificReport.name }} report
+			<a  @click="eventEmitter(0)"> <= 
+				
+				{{ specificReport.name }} report
+			</a> 
 		</h1>
 		<input id="textBoxNameSection" type="text" value="Enter a name"> </input>
 		<button type="button" @click="addSection(specificReport)" class="btn btn-outline-primary" >Add new section</button>
 		<div class="container-fluid" v-for="section in specificReport.sections">
 			<div class="row">
 				<div class="col">
-			<button type="button" class="btn" @click="eventEmitter(section)">
-				{{ section.name }} 
-			</button>
+					<button type="button" class="btn" @click="eventEmitter(section)">
+						{{ section.name }} 
+					</button>
 				</div>
 				<div class="col">
-				<button class="btn btn-danger" @click="deleteSection(section)">X</button>
+					<button class="btn btn-danger" @click="deleteSection(section)">X</button>
 				</div>
 			</div>
-			 
 		</div>
 	</div>
 </template>

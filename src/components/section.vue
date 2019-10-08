@@ -5,12 +5,18 @@
 		<label >Text:</label>
      	<input type="text" class="form-control" id="SpeachToText" placeholder="Text" value="Enter some text here">
      	<br>
-     	<video ref="video" id="video" width="100" height="100" autoplay></video>
+     	<video ref="video" id="video" width="300" height="300" autoplay></video>
      	<button id="snap" v-on:click="snap()">Snap Photo</button>
      	<canvas id="canvas" width="100" height="100"></canvas>
-     	<div class="container-fluid" v-for="image in images">
-			<img :src="'data:image/png;base64,' + image"></img>
-		</div>
+
+
+     	<ul class="list-group" v-for="image in images">
+		  <li class="list-group-item d-flex justify-content-between align-items-center">
+		  	<img :src="'data:image/png;base64,' + image" class="card-img-top img-responsive">
+		    <span class="badge badge-primary badge-pill" @click="deleteImage(image)">Delete</span>
+		  </li>
+		</ul>
+
      	<br>
 		<label >Note:</label>
      	<input type="text" class="form-control" id="NoteImput" placeholder="Text" value="Enter some text here">
@@ -85,9 +91,24 @@
 			    canvas.width = img.width;
 			    canvas.height = img.height;
 			    var ctx = canvas.getContext("2d");
-			    ctx.drawImage(img, 0, 0);
+			    ctx.drawImage(img, 0, 0, 300, 300);
 			    var dataURL = canvas.toDataURL("image/png");
 			    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+			},
+			deleteImage: function (image) {
+				let tempVar = this.specificSection
+				db.get(this.specificReport._id).then(function(doc) {
+					doc.section = doc.sections.map(function (section) {
+						if(section._id == tempVar._id){
+							section.info.images = section.info.images.filter((value, index) => value != image)
+						}
+					})
+					console.log("Image deleted")
+					return db.put(doc)
+				}).catch(function (err) {
+				  console.log(err);
+				});
+				this.images.splice(image, 1)
 			},
 	    	eventEmitter: function(section) {
 	    		this.$emit("selected", section)
@@ -98,4 +119,7 @@
 
 <style>
 
+#video {
+	display: none;
+}
 </style>
