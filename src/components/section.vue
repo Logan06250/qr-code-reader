@@ -13,7 +13,7 @@
      	<ul class="list-group" v-for="image in images">
 		  <li class="list-group-item d-flex justify-content-between align-items-center">
 		  	<img :src="'data:image/png;base64,' + image" class="card-img-top img-responsive">
-		    <span class="badge badge-primary badge-pill" @click="deleteImage(image)">Delete</span>
+		    <button class="btn btn-primary" @click="deleteImage(image)">Delete</button>
 		  </li>
 		</ul>
 

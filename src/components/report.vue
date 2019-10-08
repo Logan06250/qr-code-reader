@@ -6,7 +6,7 @@
 				{{ specificReport.name }} report
 			</a> 
 		</h1>
-		<input id="textBoxNameSection" type="text" value="Enter a name"> </input>
+		<input id="textBoxNameSection" type="text" placeholder="Enter a Name"> </input>
 		<button type="button" @click="addSection(specificReport)" class="btn btn-outline-primary" >Add new section</button>
 		<div class="container-fluid" v-for="section in specificReport.sections">
 			<div class="row">

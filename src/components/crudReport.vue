@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<h1> Report Manager </h1>
-		<input id="textBoxNameReport" type="text" value="Enter a name"> </input>
+		<input id="textBoxNameReport" type="text" placeholder="Enter a Name"> </input>
 		<button type="button" @click="addReport()" class="btn btn-outline-primary" >Add new report</button>
 
 		<div class="container-fluid" v-for="report in reports" :key="report._id">
