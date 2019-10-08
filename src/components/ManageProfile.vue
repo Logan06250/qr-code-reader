@@ -35,14 +35,21 @@
       <input type="text" @keypress="isNumber($event)"class="form-control" id="phone" placeholder="0 895 896 180">
     </div>
   </div>
-    <button type="submit" class="btn btn-primary" onclick="window.location.href= '#/'">Submit</button>
+    <button type="submit" class="btn btn-primary" @click="newUser()">Submit</button>
 </form>
 </div>
 </template>
 <script>
+  window.db = new PouchDB("User")
+  console.log("Local database created and imported")
 export default{
+  data(){
+          return{
+            User:[
+            ]
+        }
+      },
   methods: {
-    //Only numbers are allowed
     isNumber: function(evt) {
       evt = (evt) ? evt : window.event;
       var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -51,6 +58,32 @@ export default{
       } else {
         return true;
       }
+    },
+    newUser: function(){
+      var person = {
+            _id: new Date().toISOString(),
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            yourEmail: document.getElementById("inputEmail").value,
+            companyName: document.getElementById("companyName").value,
+            emailCompany: document.getElementById("inputEmailCompany").value,
+            address: document.getElementById("inputAddress").value,
+            zipCode: document.getElementById("inputZip").value,
+            phone: document.getElementById("phone").value,
+        }
+        db.put(person).then((res) => {
+            console.log("Profil Added")
+            this.User.push(person)
+        }).catch((err) => {
+            console.error(err)
+        })
+
+        db.allDocs({ include_docs: true, descending: true }, (err, doc) => {
+                    console.log(doc)
+                }).catch((err) => {
+                    console.error(err)
+                })
+
     }
   }
 };
