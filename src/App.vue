@@ -8,13 +8,9 @@
   import Home from './components/Home'
   import ManageProfile from './components/ManageProfile'
   import MyReports from './components/MyReports'
-  import PageNotFound from './components/PageNotFound'
-  import Sectiontest from './components/Sectiontest'
   import Report from './components/report'
   import Section from './components/section'
   import CrudReport from './components/crudReport'
-  import speachtotext from './components/speachtotext'
-
 
   export default {
     name: 'App',
@@ -22,12 +18,9 @@
       Home,
       ManageProfile,
       MyReports,
-      Sectiontest,
       Report,
       Section,
       CrudReport,
-      speachtotext,
-      PageNotFound
     }
   };
 </script>

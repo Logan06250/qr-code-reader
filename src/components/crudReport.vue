@@ -97,7 +97,8 @@
 	    				cptLine += 53
 	    			})
 	    		})
-				doc.save(report.name)
+	    		doc.output('dataurl')
+				//doc.save(report.name)
 
 				function isEnoughtLine(line){ return ((line + cptLine) >= doc.internal.pageSize.height)}
 
