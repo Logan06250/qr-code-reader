@@ -11,6 +11,7 @@
 				</div>
 				<div class="col">
 					<button  class="btn btn-danger" @click="deleteReport(report)">X</button>
+					<button  class="btn btn-primary" @click="pdfGenerator()">Gen Raport</button>
 				</div>
 			</div>
 			<br>
@@ -70,6 +71,12 @@
 	    	},
 	    	emitReport: function(report) {
 	    		this.$emit("selected", report)
+	    	},
+	    	pdfGenerator: function(){
+	    		var doc = new jsPDF()
+				var companyName = "this is the text"
+				doc.text(companyName, 10, 10)
+				doc.save('I Love You.pdf')
 	    	}
 	    }
 	};
