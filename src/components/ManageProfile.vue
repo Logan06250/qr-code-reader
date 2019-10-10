@@ -83,6 +83,7 @@
       }
     },
     newUser: function(){
+
       var person = {
             _id: new Date().toISOString(),
             firstName: document.getElementById("firstName").value,
@@ -100,13 +101,12 @@
         }).catch((err) => {
             console.error(err)
         })
-
         db.allDocs({ include_docs: true, descending: true }, (err, doc) => {
                     console.log(doc)
                 }).catch((err) => {
                     console.error(err)
                 })
-
+                alert("Profile created, thank you " + person.firstName)
     }
   }
 };

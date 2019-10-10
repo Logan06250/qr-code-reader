@@ -58,6 +58,7 @@
 				var del = this.reports.indexOf(report)
 				db.get(report._id).then(function(doc){
 					return db.remove(doc)
+
 					console.log("Report deleted")
 				}).catch((err) => {
 					console.error(err)
@@ -76,11 +77,49 @@
 	    	emitReport: function(report) {
 	    		this.$emit("selected", report)
 	    	},
-	    	pdfGenerator: function(){
+	    	pdfGenerator: function(report){
 	    		var doc = new jsPDF()
-				var companyName = "this is the text"
-				doc.text(companyName, 10, 10)
-				doc.save('I Love You.pdf')
+	    		var cptLine = 5
+	    		var interline = 5
+
+	    		doc.setPage(1)
+	    		doc.text(report.name, 5, cptLine)
+	    		cptLine += interline
+	    		report.sections.map(function (section){
+	    			cptLine += interline
+	    			if(isEnoughtLine(linesInText(section.name) * interline)){ doc.addPage(), cptLine = 5 }
+	    			putInPdfText(section.name, 10)
+	    			cptLine+= interline
+	    			if(isEnoughtLine(linesInText(section.info.text) * interline)){ doc.addPage(), cptLine = 5 }
+	    			putInPdfText(section.info.text, 15)
+	    			cptLine+= interline
+	    			if(isEnoughtLine(linesInText(section.info.note) * interline)){ doc.addPage(), cptLine = 5 }
+	    			putInPdfText(section.info.note, 15)
+	    			section.info.images.map(function (image) {
+	    				if(isEnoughtLine(53)){ doc.addPage(), cptLine = 5 }
+	    				doc.addImage('data:image/jpeg;base64,'+ image,"jpeg",15, cptLine, 50, 50)
+	    				cptLine += 53
+	    			})
+	    		})
+	    		doc.output('dataurl')
+				//doc.save(report.name)
+
+				function isEnoughtLine(line){ return ((line + cptLine) >= doc.internal.pageSize.height)}
+
+				function linesInText(text){
+					var linesInText = Math.ceil(text.length / doc.internal.pageSize.width)
+					return linesInText
+				}
+				
+				function putInPdfText(text, leftPadding){
+					while(text.length > doc.internal.pageSize.width / 3){
+						doc.text(text.substring(0,doc.internal.pageSize.width / 3), leftPadding, cptLine)
+						cptLine += interline
+						text = text.substring(doc.internal.pageSize.width / 3, text.length)
+					}
+					doc.text(text, 15, cptLine)
+					cptLine += interline
+				}
 	    	}
 	    }
 	};

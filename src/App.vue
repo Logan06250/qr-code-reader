@@ -27,7 +27,6 @@
       Slide
     },
     methods: {
-
     }
   };
 </script>
