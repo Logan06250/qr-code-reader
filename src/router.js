@@ -3,10 +3,6 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import ManageProfile from '@/components/ManageProfile'
 import MyReports from '@/components/MyReports'
-import Sectiontest from '@/components/Sectiontest'
-import PageNotFound from '@/components/PageNotFound'
-import pdfGenerator from '@/components/pdfGenerator'
-import speachtotext from '@/components/speachtotext'
 
 Vue.use(Router)
 
@@ -26,28 +22,6 @@ export default new Router({
       path: '/MyReports',
       name: 'MyReports',
       component: MyReports
-    },
-    {
-      path: '/Sectiontest',
-      name: 'Sectiontest',
-      component: Sectiontest
-    },
-    {
-      path: '/pdfGenerator',
-      name: 'pdfGenerator',
-      component: pdfGenerator
-    },
-        {
-      path: '/speachtotext',
-      name: 'speachtotext',
-      component: speachtotext
-    },
-    {
-      path: '**',
-      name: 'PageNotFound',
-      component: PageNotFound
     }
-    
-    
   ]
 })

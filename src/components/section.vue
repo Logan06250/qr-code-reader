@@ -1,27 +1,41 @@
 <template>
-	<div>
-		<h1> <a class="list-group-item list-group-item-action" @click="eventEmitter(0)"> <= {{ specificSection.name }} section</a> </h1>
-		<br>
+	<div style="padding-top: 10%">
+		<h3>
+			<a  @click="eventEmitter(1)">  
+				<i class="fas fa-angle-left"></i>
+				{{ specificReport.name }}
+			</a>
+			<a  @click="eventEmitter(0)">  
+				<i class="fas fa-angle-left"></i>
+				{{ specificSection.name }}
+			</a>  
+		</h3>
 		<label >Text:</label>
-     	<input type="text" class="form-control" id="SpeachToText" placeholder="Text" value="Enter some text here">
+     	<input type="text" class="form-control" id="SpeachToText" placeholder="Enter your text here" value="Enter some text here" style="word-break: break-word">
      	<br>
      	<video ref="video" id="video" width="300" height="300" autoplay></video>
-     	<button id="snap" v-on:click="snap()">Snap Photo</button>
+     	<center>
+     		<button id="snap" class="btn btn-circle btn-info" style="width: 80px;
+    height: 80px; font-size: 15px; margin: 10px; margin-top: -10px" v-on:click="snap()">Photo</button>
+     	</center>
      	<canvas id="canvas" width="100" height="100"></canvas>
 
 
      	<ul class="list-group" v-for="image in images">
 		  <li class="list-group-item d-flex justify-content-between align-items-center">
 		  	<img :src="'data:image/png;base64,' + image" class="card-img-top img-responsive">
-		    <span class="badge badge-primary badge-pill" @click="deleteImage(image)">Delete</span>
+		    <span class="badge badge-danger badge-pill" @click="deleteImage(image)" style="margin-left: 10px">X</span>
 		  </li>
 		</ul>
 
      	<br>
 		<label >Note:</label>
-     	<input type="text" class="form-control" id="NoteImput" placeholder="Text" value="Enter some text here">
+     	<input type="text" class="form-control" id="NoteImput" placeholder="Enter your note here" value="Enter some text here" cols="40" rows="5">
      	<br>
-     	<button id="save" @click="saveButton(specificSection)" class="btn btn-primary">Save informations and go back</button>
+     	<center>
+     		<button  id="save" @click="saveButton(specificSection)" class="btn btn-circle btn-info" style="width: 60px;
+    height: 60px; font-size: 15px; margin: 10px; margin-top: -10px">Save</button>
+     	</center>
 	</div>
 </template>
 
@@ -119,7 +133,7 @@
 
 <style>
 
-#video {
+#video, #canvas {
 	display: none;
 }
 </style>

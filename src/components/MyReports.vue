@@ -1,5 +1,20 @@
 <template>
 	<div>
+        <div id="Navigation">
+            <Slide id="menu">
+            <a id="home" href='#/'> 
+                <span>Home</span>  
+            </a>
+            <a id="home" href='#/MyReports'> 
+                <span>Reports</span>  
+            </a>
+            <a id="home" href='#/ManageProfile'> 
+                <span>Profile</span>  
+            </a>
+            </Slide>
+            <h1 style="margin-left: 80px; padding-top: 5px">{{ title }}</h1>
+            <div style="padding-top: 1px"></div>
+        </div>
 		<div v-if="statement == 0">
 			<CrudReport v-on:selected="selectedReport($event)"></CrudReport>
 		</div>
@@ -9,9 +24,7 @@
 		<div v-if="statement == 2">
 			<Section :groupedProps="[specificReport, specificSection]" v-on:selected="sectionEventHandler($event)"></Section>
 		</div>
-
 	</div>
-
 </template>
 
 
@@ -20,7 +33,7 @@
 import CrudReport from './crudReport'
 import Report from './report'
 import Section from './section'
-
+import { Slide } from 'vue-burger-menu'
 
 export default {
     name: 'App',
@@ -29,12 +42,14 @@ export default {
 		    specificReport: 0,
 		    specificSection: 0,
 		    statement: 0,
+            title: "Reports"
 	   	}
 	},
     components: {
       CrudReport,
       Section,
-      Report
+      Report,
+      Slide
     },
     methods: {
     	selectedReport: function (specificReport) {
@@ -52,15 +67,41 @@ export default {
     	sectionEventHandler: function (event) {
     		if(event == 0) {
     			this.statement = 1
-    		}else {}
+    		}else if(event == 1) {
+                this.statement = 0
+            }
     	}
     }
-  }
+}
 
 </script>
 
 
 <style>
 
+#Navigation {
+
+    background-color: #2F4558;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    margin-bot: 10px;
+    margin-top: -6%;
+    width:100%;
+    height:7.5%;
+    z-index:10;
+    display:block;
+    position: fixed;
+    color: #FFF;
+}
+.bm-burger-button {
+      position: fixed;
+      width: 36px;
+      height: 30px;
+      left: 20px;
+      top: 15px;
+      cursor: pointer;
+    }
 
 </style>

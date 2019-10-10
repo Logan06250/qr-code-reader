@@ -1,17 +1,19 @@
 <template>
-	<div>
-		<h1> Report Manager </h1>
-		<input id="textBoxNameReport" type="text" value="Enter a name"> </input>
-		<button type="button" @click="addReport()" class="btn btn-outline-primary" >Add new report</button>
+	<div style="padding-top: 14%">
+		<div style="margin-top: 0px; margin-left: 10px">
+			<button type="button" @click="addReport()" class="btn btn-info" >Add a report</button>
+		</div>
 
-		<div class="container-fluid" v-for="report in reports" :key="report._id">
+		<div class="container-fluid" v-for="report in reports" :key="report._id" style="margin-top: 3px">
 			<div class="row">
     			<div class="col">
 					<button type="button" class="btn" @click="emitReport(report)">{{ report.name }} </button>
 				</div>
 				<div class="col">
-					<button  class="btn btn-danger" @click="deleteReport(report)">X</button>
-					<button  class="btn btn-primary" @click="pdfGenerator()">Gen Raport</button>
+					<button  class="btn btn-circle btn-danger" @click="deleteReport(report)" style="margin-right: 10px; width: 45px;
+    height: 45px; font-size: 15px;">X</button>
+					<button  class="btn btn-circle" @click="pdfGenerator()" style="background-color: #2F4558; color: #FFF; width: 45px;
+    height: 45px; font-size: 15px;">PDF</button>
 				</div>
 			</div>
 			<br>
@@ -21,6 +23,7 @@
 </template>
 
 <script>
+	import { Slide } from 'vue-burger-menu'
 	
 	window.db = new PouchDB("reports")
 	console.log("Local database created and imported")
@@ -37,9 +40,10 @@
 	    },
 	    methods: {
 	    	addReport: function () {
+	    		var nexReportName = prompt("Enter a name")
 	    		var report = {
 				    _id: new Date().toISOString(),
-				    name: document.getElementById("textBoxNameReport").value,
+				    name: nexReportName,
 				    sections: [
 					]
 				}
@@ -84,5 +88,12 @@
 
 
 <style>
-
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 24px;
+    line-height: 1.33;
+}
 </style>
