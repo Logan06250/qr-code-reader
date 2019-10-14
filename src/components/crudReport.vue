@@ -12,7 +12,7 @@
 				<div class="col">
 					<button  class="btn btn-circle btn-danger" @click="deleteReport(report)" style="margin-right: 10px; width: 45px;
     height: 45px; font-size: 15px;">X</button>
-					<button  class="btn btn-circle" @click="pdfGenerator()" style="background-color: #2F4558; color: #FFF; width: 45px;
+					<button  class="btn btn-circle" @click="pdfGenerator(report)" style="background-color: #2F4558; color: #FFF; width: 45px;
     height: 45px; font-size: 15px;">PDF</button>
 				</div>
 			</div>
@@ -97,12 +97,19 @@
 	    			putInPdfText(section.info.note, 15)
 	    			section.info.images.map(function (image) {
 	    				if(isEnoughtLine(53)){ doc.addPage(), cptLine = 5 }
-	    				doc.addImage('data:image/jpeg;base64,'+ image,"jpeg",15, cptLine, 50, 50)
+	    				doc.addImage(image,"jpeg",15, cptLine, 50, 50)
 	    				cptLine += 53
 	    			})
 	    		})
-	    		doc.output('dataurl')
+	    		//doc.output('dataurl')
 				//doc.save(report.name)
+
+				var string = doc.output('datauristring');
+				var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>"
+				var x = window.open();
+				x.document.open();
+				x.document.write(iframe);
+				x.document.close();
 
 				function isEnoughtLine(line){ return ((line + cptLine) >= doc.internal.pageSize.height)}
 

@@ -34,6 +34,8 @@ import CrudReport from './crudReport'
 import Report from './report'
 import Section from './section'
 import { Slide } from 'vue-burger-menu'
+import { createWorker } from 'tesseract.js';
+
 
 export default {
     name: 'App',
@@ -49,7 +51,8 @@ export default {
       CrudReport,
       Section,
       Report,
-      Slide
+      Slide,
+      createWorker
     },
     methods: {
     	selectedReport: function (specificReport) {
@@ -89,7 +92,7 @@ export default {
     margin-bot: 10px;
     margin-top: -6%;
     width:100%;
-    height:7.5%;
+    height:62px;
     z-index:10;
     display:block;
     position: fixed;

@@ -51,8 +51,8 @@
         </div>
       </div>
       <center>
-        <button  id="save" @click="newUser()" class="btn btn-circle btn-info" style="width: 60px;
-    height: 60px; font-size: 15px; margin: 10px; margin-top: -10px">Submit</button>
+        <button id="save" @click="newUser()" class="btn btn-circle btn-info" style="width: 60px;
+    height: 60px; font-size: 15px; margin: 10px; margin-top: -10px" href="/">Submit</button>
       </center>
     </form>
   </div>
@@ -102,11 +102,11 @@
             console.error(err)
         })
         db.allDocs({ include_docs: true, descending: true }, (err, doc) => {
-                    console.log(doc)
-                }).catch((err) => {
-                    console.error(err)
-                })
-                alert("Profile created, thank you " + person.firstName)
+          console.log(doc)
+        }).catch((err) => {
+          console.error(err)
+        })
+
     }
   }
 };

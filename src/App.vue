@@ -14,6 +14,8 @@
   import Section from './components/section'
   import CrudReport from './components/crudReport'
   import { Slide } from 'vue-burger-menu'
+  import { createWorker } from 'tesseract.js';
+
 
   export default {
     name: 'App',
@@ -24,7 +26,8 @@
       Report,
       Section,
       CrudReport,
-      Slide
+      Slide,
+      createWorker
     },
     methods: {
     }

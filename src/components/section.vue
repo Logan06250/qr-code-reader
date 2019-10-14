@@ -11,37 +11,43 @@
 			</a>  
 		</h3>
 		<label >Text:</label>
-     	<input type="text" class="form-control" id="SpeachToText" placeholder="Enter your text here" value="Enter some text here" style="word-break: break-word">
+		<span id="save" @click="startDictation('SpeachToText')" class="btn btn-circle btn-danger fas fa-microphone " style="width: 35px;
+    height: 35px; font-size: 15px; margin: 10px;" ></span>
+     	<input type="text" class="form-control" id="SpeachToText" placeholder="Enter your text here"  style="word-break: break-word">
      	<br>
      	<video ref="video" id="video" width="300" height="300" autoplay></video>
      	<center>
-     		<button id="snap" class="btn btn-circle btn-info" style="width: 80px;
-    height: 80px; font-size: 15px; margin: 10px; margin-top: -10px" v-on:click="snap()">Photo</button>
+     		<input class="inputfile" name="files" id="files" type="file" accept=".heic, .hevc, .heif, .pdf, .png, .gif, .jpg, .jpeg, .doc, .docx, application/msword, application/pdf" multiple @change="handleFileSelect()" capture>
+     		<label id="snap" class="btn btn-circle btn-info" style="width: 80px;
+    height: 80px; font-size: 20px; margin: 10px; margin-top: -10px" for="files"> Add Photo</label>
      	</center>
      	<canvas id="canvas" width="100" height="100"></canvas>
 
+     	<br>
+		<label >Note:</label>
+		<span id="save" @click="startDictation('NoteImput')" class="btn btn-circle btn-danger fas fa-microphone " style="width: 35px;
+    height: 35px; font-size: 15px; margin: 10px;" ></span>
+     	<input type="text" class="form-control" id="NoteImput" placeholder="Enter your note here"  cols="40" rows="5">
+     	<br>
+     	<center>
+     		<button  id="save" @click="saveButton(specificSection)" class="btn btn-circle btn-info" style="width: 60px;
+    height: 60px; font-size: 15px;">Save</button>
+     	</center>
 
-     	<ul class="list-group" v-for="image in images">
+     	<ul class="list-group" v-for="image in images" style="margin-top: 20px">
 		  <li class="list-group-item d-flex justify-content-between align-items-center">
 		  	<img :src="'data:image/png;base64,' + image" class="card-img-top img-responsive">
 		    <span class="badge badge-danger badge-pill" @click="deleteImage(image)" style="margin-left: 10px">X</span>
 		  </li>
 		</ul>
-
-     	<br>
-		<label >Note:</label>
-     	<input type="text" class="form-control" id="NoteImput" placeholder="Enter your note here" value="Enter some text here" cols="40" rows="5">
-     	<br>
-     	<center>
-     		<button  id="save" @click="saveButton(specificSection)" class="btn btn-circle btn-info" style="width: 60px;
-    height: 60px; font-size: 15px; margin: 10px; margin-top: -10px">Save</button>
-     	</center>
 	</div>
 </template>
 
 <script>
 	window.db = new PouchDB("reports")
 	console.log("Local database created")
+
+	import { createWorker } from 'tesseract.js';
 
 	export default {
 	   props: ['groupedProps'],
@@ -50,13 +56,13 @@
 	   			specificReport: 0,
 	   			specificSection: 0,
 	   			context: 0,
-	   			video: 0,
+	   			file: 0,
 	   			images: []
 	   		}
 	   },
 	   mounted:function(){
 	    	this.context = document.getElementById('canvas').getContext('2d')
-	    	this.video = document.getElementById('video')
+	    	this.file = document.getElementById('file')
 
 		   	this.video = this.$refs.video;
 	        if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -78,9 +84,54 @@
 			    	tempImages.push(image)
 			  	});
 			  	this.images = tempImages
-	   		}
+	   		} 
+
+			const worker = createWorker({
+			  logger: m => console.log(m), // Add logger here
+			});
+
+			(async () => {
+			  await worker.load();
+			  await worker.loadLanguage('eng');
+			  await worker.initialize('eng');
+			  const { data: { text } } = await worker.recognize('data:image/png;base64,' + this.images);
+			  var regex = /[a-zA-Z0-9]*<{3,}[a-zA-Z0-9]*/g
+			  
+			  var mrt = text.match(regex).join()
+			  if(mrt != null){
+			  	var passportNb = mrt.substring(0, 8)
+			  	console.log("Passport Number :" + passportNb)
+			  	var nationality = mrt.substring(10, 13)
+			  	console.log("Nationality :" + nationality)
+			 	var dateOfBirth = mrt.substring(13, 19)
+			 	console.log("Date Of Birth :" + dateOfBirth)
+			  	var sex = mrt[20]
+			  	console.log("Sex :" + sex)
+			  	var expirationDate = mrt.substring(21, 27)
+			  	console.log("Expiration Date :" + expirationDate)
+			  	var personalNb = mrt.substring(28, 42)
+			  	console.log("Personal Number :" + personalNb)
+			  }
+			  await worker.terminate();
+			})();
 	   	},
 	    methods: {
+	    	startDictation: function (imputText) {
+	    		if (window.hasOwnProperty('webkitSpeechRecognition')) {
+			      var recognition = new webkitSpeechRecognition();
+			      recognition.continuous = false;
+			      recognition.interimResults = false;
+			      recognition.lang = "en-US";
+			      recognition.start();
+			      recognition.onresult = function(e) {
+			        document.getElementById(imputText).value += " " + e.results[0][0].transcript;
+			        recognition.stop();
+			      };
+			      recognition.onerror = function(e) {
+			        recognition.stop();
+			      }
+			    }
+	    	},
 	    	saveButton: function(specificSection) {
 	    		let sectionInformation = { text: document.getElementById("SpeachToText").value, note: document.getElementById("NoteImput").value, images: this.images}
 	    		this.specificSection.info = sectionInformation
@@ -97,17 +148,20 @@
 				});
 				this.eventEmitter(0)
 	    	},
-	    	snap: function() {
-	    		this.images.push(this.getBase64Image(this.video))
-	    	},
-	    	getBase64Image: function (img) {
-			    var canvas = document.createElement("canvas");
-			    canvas.width = img.width;
-			    canvas.height = img.height;
-			    var ctx = canvas.getContext("2d");
-			    ctx.drawImage(img, 0, 0, 300, 300);
-			    var dataURL = canvas.toDataURL("image/png");
-			    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+	    	handleFileSelect: function() {
+			  	var file = document.getElementById("files").files[0];
+			  	this.getBase64(file)
+			},
+			getBase64: function (file) {
+			   var reader = new FileReader();
+			   reader.readAsDataURL(file);
+
+			   var tempImage = this.images
+
+			   reader.onload = function () {
+			   	console.log(reader.result)
+			     tempImage.push(reader.result.replace(/^data:image\/(png|jpg);base64,/, ""));
+			   };
 			},
 			deleteImage: function (image) {
 				let tempVar = this.specificSection
@@ -135,5 +189,14 @@
 
 #video, #canvas {
 	display: none;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
 }
 </style>
