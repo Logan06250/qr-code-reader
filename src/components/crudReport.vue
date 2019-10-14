@@ -11,7 +11,9 @@
 				</div>
 				<div class="col">
 					<button  class="btn btn-danger" @click="deleteReport(report)">X</button>
-					<button  class="btn btn-primary" @click="pdfGenerator(report)">Gen Raport</button>
+					<div  class="container-fluid" v-for="user in User" :key="user._id">
+						<button  class="btn btn-primary" @click="pdfGenerator(report,user)">Gen Raport</button> 
+				</div>
 				</div>
 			</div>
 			<br>
@@ -22,14 +24,16 @@
 
 <script>
 	
-	window.db = new PouchDB("reports")
+	var db = new PouchDB("reports")
+	var dbUser = new PouchDB("User")
 	console.log("Local database created and imported")
 
 	export default{
 	    data(){
 	        return{
 		        reports:[
-	        	]
+	        	],
+	        	User:[]
 	    	}
 	    },
 	    mounted:function(){
@@ -65,6 +69,18 @@
 	    		db.allDocs({ include_docs: true, descending: true }, (err, doc) => {
 				    doc.rows.forEach(e => {
 				        this.reports.push(e.doc)
+
+				    	
+				    });
+				}).catch((err) => {
+				    console.error(err)
+				})
+
+				dbUser.allDocs({ include_docs: true, descending: true }, (err, doc) => {
+				    doc.rows.forEach(e => {
+				        this.User.push(e.doc)
+
+				    	
 				    });
 				}).catch((err) => {
 				    console.error(err)
@@ -73,12 +89,30 @@
 	    	emitReport: function(report) {
 	    		this.$emit("selected", report)
 	    	},
-	    	pdfGenerator: function(report){
+	    	pdfGenerator: function(report, User){
 	    		var doc = new jsPDF()
 	    		var cptLine = 5
 	    		var interline = 5
 
 	    		doc.setPage(1)
+
+	    		doc.text(User.firstName, 5, cptLine)
+	    		cptLine += interline
+	    		doc.text(User.lastName, 5, cptLine)
+	    		cptLine += interline
+            	doc.text(User.yourEmail, 5, cptLine)
+            	cptLine += interline
+            	doc.text(User.companyName, 5, cptLine)
+            	cptLine += interline
+            	doc.text(User.emailCompany, 5, cptLine)
+            	cptLine += interline
+            	doc.text(User.address, 5, cptLine)
+            	cptLine += interline
+            	doc.text(User.zipCode, 5, cptLine)
+            	cptLine += interline
+            	doc.text(User.phone, 5, cptLine)
+
+
 	    		doc.text(report.name, 5, cptLine)
 	    		cptLine += interline
 	    		report.sections.map(function (section){

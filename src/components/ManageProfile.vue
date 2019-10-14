@@ -40,8 +40,8 @@
 </div>
 </template>
 <script>
-  window.db = new PouchDB("User")
-  console.log("Local database created and imported")
+  var db = new PouchDB("User")
+
 export default{
   data(){
           return{
@@ -49,44 +49,60 @@ export default{
             ]
         }
       },
-  methods: {
-    isNumber: function(evt) {
-      evt = (evt) ? evt : window.event;
-      var charCode = (evt.which) ? evt.which : evt.keyCode;
-      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
-        evt.preventDefault();;
-      } else {
-        return true;
-      }
-    },
-    newUser: function(){
+    mounted: function () {
+      db.allDocs({ include_docs: true, descending: true }, (err, doc) => {
+        doc.rows.forEach(e => {
+            console.log(e)
+        });
 
-      var person = {
-            _id: new Date().toISOString(),
-            firstName: document.getElementById("firstName").value,
-            lastName: document.getElementById("lastName").value,
-            yourEmail: document.getElementById("inputEmail").value,
-            companyName: document.getElementById("companyName").value,
-            emailCompany: document.getElementById("inputEmailCompany").value,
-            address: document.getElementById("inputAddress").value,
-            zipCode: document.getElementById("inputZip").value,
-            phone: document.getElementById("phone").value,
+    }).catch((err) => {
+        console.error(err);
+    })
+
+      },
+    methods: {
+      isNumber: function(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+          evt.preventDefault();;
+        } else {
+          return true;
         }
-        db.put(person).then((res) => {
-            console.log("Profil Added")
-            this.User.push(person)
-        }).catch((err) => {
-            console.error(err)
-        })
-        db.allDocs({ include_docs: true, descending: true }, (err, doc) => {
-                    console.log(doc)
-                }).catch((err) => {
-                    console.error(err)
-                })
-                alert("Profile created, thank you " + person.firstName)
+      },
+    newUser: function(){
+      db.get('123456789').then(function (doc) {
+        doc.firstName = document.getElementById("firstName").value
+        doc.lastName =  document.getElementById("lastName").value
+        doc.yourEmail = document.getElementById("inputEmail").value
+        doc.companyName = document.getElementById("companyName").value
+        doc.emailCompany = document.getElementById("inputEmailCompany").value
+        doc.address = document.getElementById("inputAddress").value
+        doc.zipCode = document.getElementById("inputZip").value
+        doc.phone = document.getElementById("phone").value
+        console.log(doc)
+        return db.put(doc);
+      }).catch(function (err) {
+        if (err.name === 'not_found') {
+            var person = {
+              _id : "123456789",
+              firstName : document.getElementById("firstName").value,
+              lastName :  document.getElementById("lastName").value,
+              yourEmail : document.getElementById("inputEmail").value,
+              companyName : document.getElementById("companyName").value,
+              emailCompany : document.getElementById("inputEmailCompany").value,
+              address : document.getElementById("inputAddress").value,
+              zipCode : document.getElementById("inputZip").value,
+              phone : document.getElementById("phone").value,
+            }
+            return db.put(person)
+        } else {
+          throw err;
+        }
+      })
     }
   }
-};
+}
 </script>
 <style>
 
