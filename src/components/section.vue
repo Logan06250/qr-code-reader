@@ -47,8 +47,6 @@
 	window.db = new PouchDB("reports")
 	console.log("Local database created")
 
-	import { createWorker } from 'tesseract.js';
-
 	export default {
 	   props: ['groupedProps'],
 	   data() {
@@ -85,35 +83,6 @@
 			  	});
 			  	this.images = tempImages
 	   		} 
-
-			const worker = createWorker({
-			  logger: m => console.log(m), // Add logger here
-			});
-
-			(async () => {
-			  await worker.load();
-			  await worker.loadLanguage('eng');
-			  await worker.initialize('eng');
-			  const { data: { text } } = await worker.recognize('data:image/png;base64,' + this.images);
-			  var regex = /[a-zA-Z0-9]*<{3,}[a-zA-Z0-9]*/g
-			  
-			  var mrt = text.match(regex).join()
-			  if(mrt != null){
-			  	var passportNb = mrt.substring(0, 8)
-			  	console.log("Passport Number :" + passportNb)
-			  	var nationality = mrt.substring(10, 13)
-			  	console.log("Nationality :" + nationality)
-			 	var dateOfBirth = mrt.substring(13, 19)
-			 	console.log("Date Of Birth :" + dateOfBirth)
-			  	var sex = mrt[20]
-			  	console.log("Sex :" + sex)
-			  	var expirationDate = mrt.substring(21, 27)
-			  	console.log("Expiration Date :" + expirationDate)
-			  	var personalNb = mrt.substring(28, 42)
-			  	console.log("Personal Number :" + personalNb)
-			  }
-			  await worker.terminate();
-			})();
 	   	},
 	    methods: {
 	    	startDictation: function (imputText) {
