@@ -1,27 +1,45 @@
 <template>
-	<div>
-		<h1> <a class="list-group-item list-group-item-action" @click="eventEmitter(0)"> <= {{ specificSection.name }} section</a> </h1>
-		<br>
+	<div style="padding-top: 10%">
+		<h3>
+			<a  @click="eventEmitter(1)">  
+				<i class="fas fa-angle-left"></i>
+				{{ specificReport.name }}
+			</a>
+			<a  @click="eventEmitter(0)">  
+				<i class="fas fa-angle-left"></i>
+				{{ specificSection.name }}
+			</a>  
+		</h3>
 		<label >Text:</label>
-     	<input type="text" class="form-control" id="SpeachToText" placeholder="Text" value="Enter some text here">
+		<span id="save" @click="startDictation('SpeachToText')" class="btn btn-circle btn-danger fas fa-microphone " style="width: 35px;
+    height: 35px; font-size: 15px; margin: 10px;" ></span>
+     	<input type="text" class="form-control" id="SpeachToText" placeholder="Enter your text here"  style="word-break: break-word">
      	<br>
      	<video ref="video" id="video" width="300" height="300" autoplay></video>
-     	<button id="snap" v-on:click="snap()">Snap Photo</button>
+     	<center>
+     		<input class="inputfile" name="files" id="files" type="file" accept=".heic, .hevc, .heif, .pdf, .png, .gif, .jpg, .jpeg, .doc, .docx, application/msword, application/pdf" multiple @change="handleFileSelect()" capture>
+     		<label id="snap" class="btn btn-circle btn-info" style="width: 80px;
+    height: 80px; font-size: 20px; margin: 10px; margin-top: -10px" for="files"> Add Photo</label>
+     	</center>
      	<canvas id="canvas" width="100" height="100"></canvas>
-
-
-     	<ul class="list-group" v-for="image in images">
-		  <li class="list-group-item d-flex justify-content-between align-items-center">
-		  	<img :src="'data:image/png;base64,' + image" class="card-img-top img-responsive">
-		    <button class="btn btn-primary" @click="deleteImage(image)">Delete</button>
-		  </li>
-		</ul>
 
      	<br>
 		<label >Note:</label>
-     	<input type="text" class="form-control" id="NoteImput" placeholder="Text" value="Enter some text here">
+		<span id="save" @click="startDictation('NoteImput')" class="btn btn-circle btn-danger fas fa-microphone " style="width: 35px;
+    height: 35px; font-size: 15px; margin: 10px;" ></span>
+     	<input type="text" class="form-control" id="NoteImput" placeholder="Enter your note here"  cols="40" rows="5">
      	<br>
-     	<button id="save" @click="saveButton(specificSection)" class="btn btn-primary">Save informations and go back</button>
+     	<center>
+     		<button  id="save" @click="saveButton(specificSection)" class="btn btn-circle btn-info" style="width: 60px;
+    height: 60px; font-size: 15px;">Save</button>
+     	</center>
+
+     	<ul class="list-group" v-for="image in images" style="margin-top: 20px">
+		  <li class="list-group-item d-flex justify-content-between align-items-center">
+		  	<img :src="'data:image/png;base64,' + image" class="card-img-top img-responsive">
+		    <span class="badge badge-danger badge-pill" @click="deleteImage(image)" style="margin-left: 10px">X</span>
+		  </li>
+		</ul>
 	</div>
 </template>
 
@@ -36,13 +54,13 @@
 	   			specificReport: 0,
 	   			specificSection: 0,
 	   			context: 0,
-	   			video: 0,
+	   			file: 0,
 	   			images: []
 	   		}
 	   },
 	   mounted:function(){
 	    	this.context = document.getElementById('canvas').getContext('2d')
-	    	this.video = document.getElementById('video')
+	    	this.file = document.getElementById('file')
 
 		   	this.video = this.$refs.video;
 	        if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -64,9 +82,25 @@
 			    	tempImages.push(image)
 			  	});
 			  	this.images = tempImages
-	   		}
+	   		} 
 	   	},
 	    methods: {
+	    	startDictation: function (imputText) {
+	    		if (window.hasOwnProperty('webkitSpeechRecognition')) {
+			      var recognition = new webkitSpeechRecognition();
+			      recognition.continuous = false;
+			      recognition.interimResults = false;
+			      recognition.lang = "en-US";
+			      recognition.start();
+			      recognition.onresult = function(e) {
+			        document.getElementById(imputText).value += " " + e.results[0][0].transcript;
+			        recognition.stop();
+			      };
+			      recognition.onerror = function(e) {
+			        recognition.stop();
+			      }
+			    }
+	    	},
 	    	saveButton: function(specificSection) {
 	    		let sectionInformation = { text: document.getElementById("SpeachToText").value, note: document.getElementById("NoteImput").value, images: this.images}
 	    		this.specificSection.info = sectionInformation
@@ -83,17 +117,20 @@
 				});
 				this.eventEmitter(0)
 	    	},
-	    	snap: function() {
-	    		this.images.push(this.getBase64Image(this.video))
-	    	},
-	    	getBase64Image: function (img) {
-			    var canvas = document.createElement("canvas");
-			    canvas.width = img.width;
-			    canvas.height = img.height;
-			    var ctx = canvas.getContext("2d");
-			    ctx.drawImage(img, 0, 0, 300, 300);
-			    var dataURL = canvas.toDataURL("image/png");
-			    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+	    	handleFileSelect: function() {
+			  	var file = document.getElementById("files").files[0];
+			  	this.getBase64(file)
+			},
+			getBase64: function (file) {
+			   var reader = new FileReader();
+			   reader.readAsDataURL(file);
+
+			   var tempImage = this.images
+
+			   reader.onload = function () {
+			   	console.log(reader.result)
+			     tempImage.push(reader.result.replace(/^data:image\/(png|jpg);base64,/, ""));
+			   };
 			},
 			deleteImage: function (image) {
 				let tempVar = this.specificSection
@@ -119,7 +156,16 @@
 
 <style>
 
-#video {
+#video, #canvas {
 	display: none;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
 }
 </style>

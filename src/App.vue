@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view/>
+    <div id="content">
+      <router-view/>
+    </div>
   </div>
 </template>
 <script>
@@ -8,13 +10,10 @@
   import Home from './components/Home'
   import ManageProfile from './components/ManageProfile'
   import MyReports from './components/MyReports'
-  import PageNotFound from './components/PageNotFound'
-  import Sectiontest from './components/Sectiontest'
   import Report from './components/report'
   import Section from './components/section'
   import CrudReport from './components/crudReport'
-  import speachtotext from './components/speachtotext'
-
+  import { Slide } from 'vue-burger-menu'
 
   export default {
     name: 'App',
@@ -22,12 +21,12 @@
       Home,
       ManageProfile,
       MyReports,
-      Sectiontest,
       Report,
       Section,
       CrudReport,
-      speachtotext,
-      PageNotFound
+      Slide
+    },
+    methods: {
     }
   };
 </script>
@@ -38,5 +37,8 @@
     position:absolute;
     bottom:0;
     width:100%;
+  }
+  #content{
+    margin-top: 20px;
   }
 </style>

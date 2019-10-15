@@ -1,19 +1,21 @@
 <template>
-	<div>
-		<h1> Report Manager </h1>
-		<input id="textBoxNameReport" type="text" placeholder="Enter a name"> </input>
-		<button type="button" @click="addReport()" class="btn btn-outline-primary" >Add new report</button>
+	<div style="padding-top: 14%">
+		<div style="margin-top: 0px; margin-left: 10px">
+			<button type="button" @click="addReport()" class="btn btn-info" >Add a report</button>
+		</div>
 
-		<div class="container-fluid" v-for="report in reports" :key="report._id">
+		<div class="container-fluid" v-for="report in reports" :key="report._id" style="margin-top: 3px">
 			<div class="row">
     			<div class="col">
 					<button type="button" class="btn" @click="emitReport(report)">{{ report.name }} </button>
 				</div>
 				<div class="col">
-					<button  class="btn btn-danger" @click="deleteReport(report)">X</button>
-					<div  class="container-fluid" v-for="user in User" :key="user._id">
-						<button  class="btn btn-primary" @click="pdfGenerator(report,user)">Gen Raport</button> 
-				</div>
+					<button  class="btn btn-circle btn-danger" @click="deleteReport(report)" style="margin-right: 10px; width: 45px;
+    height: 45px; font-size: 15px;">X</button>
+    				<div  class="container-fluid" v-for="user in User" :key="user._id">
+						<button  class="btn btn-circle" @click="pdfGenerator(report, user)" style="background-color: #2F4558; color: #FFF; width: 45px;
+    height: 45px; font-size: 15px;">PDF</button>
+					</div>
 				</div>
 			</div>
 			<br>
@@ -23,6 +25,7 @@
 </template>
 
 <script>
+	import { Slide } from 'vue-burger-menu'
 	
 	var db = new PouchDB("reports")
 	var dbUser = new PouchDB("User")
@@ -41,9 +44,10 @@
 	    },
 	    methods: {
 	    	addReport: function () {
+	    		var nexReportName = prompt("Enter a name")
 	    		var report = {
 				    _id: new Date().toISOString(),
-				    name: document.getElementById("textBoxNameReport").value,
+				    name: nexReportName,
 				    sections: [
 					]
 				}
@@ -127,11 +131,19 @@
 	    			putInPdfText(section.info.note, 15)
 	    			section.info.images.map(function (image) {
 	    				if(isEnoughtLine(53)){ doc.addPage(), cptLine = 5 }
-	    				doc.addImage('data:image/jpeg;base64,'+ image,"jpeg",15, cptLine, 50, 50)
+	    				doc.addImage(image,"jpeg",15, cptLine, 50, 50)
 	    				cptLine += 53
 	    			})
 	    		})
-				doc.save(report.name)
+	    		//doc.output('dataurl')
+				//doc.save(report.name)
+
+				var string = doc.output('datauristring');
+				var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>"
+				var x = window.open();
+				x.document.open();
+				x.document.write(iframe);
+				x.document.close();
 
 				function isEnoughtLine(line){ return ((line + cptLine) >= doc.internal.pageSize.height)}
 
@@ -156,5 +168,12 @@
 
 
 <style>
-
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 24px;
+    line-height: 1.33;
+}
 </style>
