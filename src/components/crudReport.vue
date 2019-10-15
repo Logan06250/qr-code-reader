@@ -12,10 +12,8 @@
 				<div class="col">
 					<button  class="btn btn-circle btn-danger" @click="deleteReport(report)" style="margin-right: 10px; width: 45px;
     height: 45px; font-size: 15px;">X</button>
-    				<div  class="container-fluid" v-for="user in User" :key="user._id">
-						<button  class="btn btn-circle" @click="pdfGenerator(report, user)" style="background-color: #2F4558; color: #FFF; width: 45px;
+					<button  class="btn btn-circle" @click="pdfGenerator(report)" style="background-color: #2F4558; color: #FFF; width: 45px;
     height: 45px; font-size: 15px;">PDF</button>
-					</div>
 				</div>
 			</div>
 			<br>
@@ -36,7 +34,7 @@
 	        return{
 		        reports:[
 	        	],
-	        	User:[],
+	        	user: []
 	    	}
 	    },
 	    mounted:function(){
@@ -73,23 +71,20 @@
 	    		db.allDocs({ include_docs: true, descending: true }, (err, doc) => {
 				    doc.rows.forEach(e => {
 				        this.reports.push(e.doc)
-
-				    	
 				    });
 				}).catch((err) => {
 				    console.error(err)
 				})
 
-				dbUser.allDocs({ include_docs: true, descending: true }, (err, doc) => {
-				    doc.rows.forEach(e => {
-				        this.User.push(e.doc)
-
-				    	
-				    });
+				var tempUser = this.user
+				dbUser.get("123456789").then(function(doc){
+					tempUser.push(doc)
+					console.log(doc)
+					console.log("User imported")
 				}).catch((err) => {
-				    console.error(err)
+					console.error(err)
 				})
-
+				
 				db.sync(remoteDb, {
 					live: true,
 					retry: true
@@ -114,43 +109,267 @@
 	    		var cptLine = 5
 	    		var interline = 5
 
-	    		doc.setPage(1)
+	    		var currUser = this.user[0]
 
-	    		doc.text(User.firstName, 5, cptLine)
-	    		cptLine += interline
-	    		doc.text(User.lastName, 5, cptLine)
-	    		cptLine += interline
-            	doc.text(User.yourEmail, 5, cptLine)
-            	cptLine += interline
-            	doc.text(User.companyName, 5, cptLine)
-            	cptLine += interline
-            	doc.text(User.emailCompany, 5, cptLine)
-            	cptLine += interline
-            	doc.text(User.address, 5, cptLine)
-            	cptLine += interline
-            	doc.text(User.zipCode, 5, cptLine)
-            	cptLine += interline
-            	doc.text(User.phone, 5, cptLine)
+	    		doc.setPage(1) 	// First page
 
+	    		doc.setTextColor(47,79,79)
+	    		doc.setFillColor(31,31,20)
+	    		doc.setFontSize(10)
+	    		doc.text("Property adress", 75, 163)
+				doc.rect(105, 160, 95, 60)
+				doc.text("Client's name", 80, 228)
+				doc.rect(105, 225, 95, 10)
+				doc.text("Date of inspection", 72, 243)
+				doc.rect(105, 240, 95, 10)
 
-	    		doc.text(report.name, 5, cptLine)
-	    		cptLine += interline
-	    		report.sections.map(function (section){
-	    			cptLine += interline
-	    			if(isEnoughtLine(linesInText(section.name) * interline)){ doc.addPage(), cptLine = 5 }
-	    			putInPdfText(section.name, 10)
-	    			cptLine+= interline
-	    			if(isEnoughtLine(linesInText(section.info.text) * interline)){ doc.addPage(), cptLine = 5 }
-	    			putInPdfText(section.info.text, 15)
-	    			cptLine+= interline
-	    			if(isEnoughtLine(linesInText(section.info.note) * interline)){ doc.addPage(), cptLine = 5 }
-	    			putInPdfText(section.info.note, 15)
-	    			section.info.images.map(function (image) {
-	    				if(isEnoughtLine(53)){ doc.addPage(), cptLine = 5 }
-	    				doc.addImage(image,"jpeg",15, cptLine, 50, 50)
-	    				cptLine += 53
-	    			})
+				doc.setFontSize(40);
+				doc.setFontType("bold");
+
+				doc.text("Inspector Gadget", 20,80)
+				doc.setTextColor(192,192,192)
+				doc.text("Report", 142,80)
+
+            	doc.addPage() 	// Second page Content
+
+				doc.setFontType("bold")
+				doc.setDrawColor(192,192,192)
+				doc.setLineWidth(1.5)
+				doc.line(40, 35, 200, 35)
+				doc.setFontSize(30)
+				doc.setTextColor(47,79,79)
+            	doc.text("Content", 40, 30)
+
+            	doc.setFontType("normal")
+
+            	doc.setFontSize(15)
+            	doc.text("Introduction to the report", 40, 60)
+            	doc.text("About the inspection", 40, 70)
+            	doc.text("About the property", 40, 80)
+
+            	doc.setTextColor(192,192,192)
+				doc.text("A", 30, 60)
+				doc.text("B", 30, 70)
+				doc.text("C", 30, 80)
+
+            	var sectionLine = 1
+            	var letters = ["D", "E", "F", "G", "H", "I", "J", "K", "L"]
+
+            	report.sections.map(function (section){
+            		doc.setTextColor(47,79,79)
+	    			doc.text(section.name, 40, 80 + (10 * sectionLine))
+	    			doc.setTextColor(192,192,192)
+					doc.text(letters[sectionLine - 1], 30, 80 + (10 * sectionLine))
+	    			sectionLine++
 	    		})
+
+            	doc.addPage() 	// Third page Introduction
+
+            	doc.setFontType("bold")
+				doc.setDrawColor(192,192,192)
+				doc.setLineWidth(1.5)
+				doc.line(40, 35, 200, 35)
+				doc.setFontSize(30)
+				doc.setTextColor(47,79,79)
+            	doc.text("Introduction to the report", 40, 30)
+            	doc.setTextColor(192,192,192)
+            	doc.setFontSize(50)
+				doc.text( "A", 15, 33)
+
+				doc.setTextColor(47,79,79)
+				doc.setFontSize(12)
+
+				var splitText = doc.splitTextToSize("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", 140)
+
+				doc.text(splitText, 40, 60)
+
+            	doc.addPage()  // Fourth about the inspection
+
+            	doc.setFontType("bold")
+				doc.setDrawColor(192,192,192)
+				doc.setLineWidth(1.5)
+				doc.line(40, 35, 200, 35)
+				doc.setFontSize(30)
+				doc.setTextColor(47,79,79)
+            	doc.text("About the inspection", 40, 30)
+            	doc.setTextColor(192,192,192)
+            	doc.setFontSize(50)
+				doc.text( "B", 15, 33)
+
+				doc.setFontSize(12)
+
+				doc.setLineWidth(0.7)
+				doc.rect(60, 60, 138, 7)
+				doc.rect(60, 73, 138, 7)
+				doc.rect(60, 86, 138, 7)
+				doc.rect(60, 99, 138, 7)
+				doc.rect(60, 112, 138, 7)
+				doc.rect(60, 125, 138, 7)
+				doc.rect(60, 138, 138, 7)
+
+				doc.setTextColor(47,79,79)
+				doc.text( "Firstname ", 20, 65)
+				doc.text( "Lastname ", 20, 78)
+				doc.text( "Email ", 20, 91)
+				doc.text( "Company Name ", 20, 104)
+				doc.text( "Company Email ", 20, 117)
+				doc.text( "Adress ", 20, 130)
+				doc.text( "Phone ", 20, 143)
+
+				doc.setTextColor(0,0,0)
+				doc.text( currUser.firstName, 65, 65)
+				doc.text( currUser.lastName, 65, 78)
+				doc.text( currUser.yourEmail, 65, 91)
+				doc.text( currUser.companyName, 65, 104)
+				doc.text( currUser.emailCompany, 65, 117)
+				doc.text( currUser.address, 65, 130)
+				doc.text( currUser.phone, 65, 143)
+
+				doc.addPage()  // Fifth about the property
+
+            	doc.setFontType("bold")
+				doc.setDrawColor(192,192,192)
+				doc.setLineWidth(1.5)
+				doc.line(40, 35, 200, 35)
+				doc.setFontSize(30)
+				doc.setTextColor(47,79,79)
+            	doc.text("About the property", 40, 30)
+            	doc.setTextColor(192,192,192)
+            	doc.setFontSize(50)
+				doc.text( "C", 15, 33)
+
+				doc.setFontSize(12)
+
+				doc.setLineWidth(0.7)
+				doc.rect(60, 60, 138, 7)
+				doc.rect(90, 73, 108, 7)
+				doc.rect(90, 86, 108, 7)
+				doc.rect(90, 99, 108, 7)
+				doc.rect(90, 122, 108, 27)
+
+				doc.setTextColor(47,79,79)
+				doc.text( "Type of property ", 20, 65)
+				doc.text( "Year the property was built ", 20, 78)
+				doc.text( "Year the property was extended ", 20, 91)
+				doc.text( "Year the property was converted ", 20, 104)
+				doc.text( "Information about flats", 20, 127)
+
+				doc.setTextColor(0,0,0)
+
+				sectionLine = 1
+				report.sections.map(function (section){
+            		doc.addPage()
+
+            		doc.setFontType("bold")
+					doc.setDrawColor(192,192,192)
+					doc.setLineWidth(1.5)
+					doc.line(40, 35, 200, 35)
+					doc.setFontSize(30)
+					doc.setTextColor(47,79,79)
+	            	doc.text(section.name, 40, 30)
+	            	doc.setTextColor(192,192,192)
+	            	doc.setFontSize(50)
+					doc.text( letters[sectionLine - 1] , 15, 33)
+
+					doc.setFontSize(20)
+					doc.setTextColor(47,79,79)
+					doc.setFontType("bold")
+					doc.text("Informations taken", 40, 50)
+					var currLine = 65
+
+					doc.setTextColor(0,0,0)
+					doc.setFontSize(12)
+					doc.setFontType("normal")
+					splitText = doc.splitTextToSize(section.info.text, 140)
+					currLine += (splitText.length * 5) + 10
+					doc.text(splitText, 40, 65)
+
+					if(isEnoughtLine(currLine)){ 
+	    					doc.addPage()
+	    					doc.setFontType("bold")
+							doc.setDrawColor(192,192,192)
+							doc.setLineWidth(1.5)
+							doc.line(40, 35, 200, 35)
+							doc.setFontSize(30)
+							doc.setTextColor(47,79,79)
+			            	doc.text(section.name, 40, 30)
+			            	doc.setTextColor(192,192,192)
+			            	doc.setFontSize(50)
+							doc.text( letters[sectionLine - 1] , 15, 33)
+							doc.setFontSize(20)
+							doc.setTextColor(47,79,79)
+							doc.setFontType("bold")
+							currLine = 45
+
+	    			}
+
+
+					doc.setFontSize(20)
+					doc.setTextColor(47,79,79)
+					doc.setFontType("bold")
+					doc.text("Photos", 40, currLine)
+
+					currLine += 15
+
+					section.info.images.map(function (image) {
+	    				if(isEnoughtLine(76 + currLine)){ 
+	    					doc.addPage()
+	    					doc.setFontType("bold")
+							doc.setDrawColor(192,192,192)
+							doc.setLineWidth(1.5)
+							doc.line(40, 35, 200, 35)
+							doc.setFontSize(30)
+							doc.setTextColor(47,79,79)
+			            	doc.text(section.name, 40, 30)
+			            	doc.setTextColor(192,192,192)
+			            	doc.setFontSize(50)
+							doc.text( letters[sectionLine - 1] , 15, 33)
+							doc.setFontSize(20)
+							doc.setTextColor(47,79,79)
+							doc.setFontType("bold")
+							currLine = 45
+	    				}
+	    				doc.addImage(image,"jpeg", 40, currLine, 70, 70)
+	    				currLine += 76
+	    			})
+
+					splitText = doc.splitTextToSize(section.info.note, 230)
+
+	    			if(isEnoughtLine(currLine + 35 + (splitText.length * 5))){ 
+	    					doc.addPage()
+	    					doc.setFontType("bold")
+							doc.setDrawColor(192,192,192)
+							doc.setLineWidth(1.5)
+							doc.line(40, 35, 200, 35)
+							doc.setFontSize(30)
+							doc.setTextColor(47,79,79)
+			            	doc.text(section.name, 40, 30)
+			            	doc.setTextColor(192,192,192)
+			            	doc.setFontSize(50)
+							doc.text( letters[sectionLine - 1] , 15, 33)
+							doc.setFontSize(20)
+							doc.setTextColor(47,79,79)
+							doc.setFontType("bold")
+							currLine = 45
+
+	    			}
+
+	    			currLine += 10
+					doc.setFontSize(20)
+					doc.setTextColor(47,79,79)
+					doc.setFontType("bold")
+					doc.text("Extra notes", 40, currLine)
+
+					currLine += 15
+
+					doc.setTextColor(0,0,0)
+					doc.setFontSize(12)
+					doc.setFontType("normal")
+					doc.text(splitText, 40, currLine)
+
+	    			sectionLine++
+	    		})
+
 	    		//doc.output('dataurl')
 				//doc.save(report.name)
 
@@ -161,7 +380,9 @@
 				x.document.write(iframe);
 				x.document.close();
 
-				function isEnoughtLine(line){ return ((line + cptLine) >= doc.internal.pageSize.height)}
+				function isEnoughtLine(line){ 
+					return ((line) >= doc.internal.pageSize.height)
+				}
 
 				function linesInText(text){
 					var linesInText = Math.ceil(text.length / doc.internal.pageSize.width)
