@@ -13,33 +13,35 @@
 		<label >Text:</label>
 		<span id="save" @click="startDictation('SpeachToText')" class="btn btn-circle btn-danger fas fa-microphone " style="width: 35px;
     height: 35px; font-size: 15px; margin: 10px;" ></span>
-     	<input type="text" class="form-control" id="SpeachToText" placeholder="Enter your text here"  style="word-break: break-word">
+     	<textarea type="text" class="form-control" id="SpeachToText" placeholder="Enter your text here"  style="word-break: break-word" cols="40" rows="5"> </textarea>
      	<br>
      	<video ref="video" id="video" width="300" height="300" autoplay></video>
      	<center>
      		<input class="inputfile" name="files" id="files" type="file" accept=".heic, .hevc, .heif, .pdf, .png, .gif, .jpg, .jpeg, .doc, .docx, application/msword, application/pdf" multiple @change="handleFileSelect()" capture>
      		<label id="snap" class="btn btn-circle btn-info" style="width: 80px;
-    height: 80px; font-size: 20px; margin: 10px; margin-top: -10px" for="files"> Add Photo</label>
+    height: 80px; font-size: 20px; margin-top: -10px;" for="files"> Add Photo</label>
      	</center>
-     	<canvas id="canvas" width="100" height="100"></canvas>
 
      	<br>
 		<label >Note:</label>
 		<span id="save" @click="startDictation('NoteImput')" class="btn btn-circle btn-danger fas fa-microphone " style="width: 35px;
     height: 35px; font-size: 15px; margin: 10px;" ></span>
-     	<input type="text" class="form-control" id="NoteImput" placeholder="Enter your note here"  cols="40" rows="5">
+     	<textarea type="text" class="form-control" id="NoteImput" placeholder="Enter your note here"  cols="40" rows="5"> </textarea>
      	<br>
      	<center>
      		<button  id="save" @click="saveButton(specificSection)" class="btn btn-circle btn-info" style="width: 60px;
     height: 60px; font-size: 15px;">Save</button>
-     	</center>
 
-     	<ul class="list-group" v-for="image in images" style="margin-top: 20px">
-		  <li class="list-group-item d-flex justify-content-between align-items-center">
-		  	<img :src="'data:image/png;base64,' + image" class="card-img-top img-responsive">
-		    <span class="badge badge-danger badge-pill" @click="deleteImage(image)" style="margin-left: 10px">X</span>
-		  </li>
-		</ul>
+			<div class="card" style="width: 80%; margin-top: 20px" v-for="image in images">
+			  <img :src="'data:image/png;base64,' + image" class="card-img-top">
+			  <div class="card-body">
+			    <a href="#" class="btn btn-danger" @click="deleteImage(image)">Delete</a>
+			  </div>
+			</div>
+
+			<canvas id="canvas" width="100" height="100"></canvas>
+
+		</center>
 	</div>
 </template>
 
