@@ -20,7 +20,6 @@
 			</div>
 			<br>
 		</div>
-
 	</div>
 </template>
 
@@ -28,6 +27,7 @@
 	import { Slide } from 'vue-burger-menu'
 	
 	var db = new PouchDB("reports")
+	var remoteDb = new PouchDB("http://localhost:5984/reports")
 	var dbUser = new PouchDB("User")
 	console.log("Local database created and imported")
 
@@ -36,7 +36,7 @@
 	        return{
 		        reports:[
 	        	],
-	        	User:[]
+	        	User:[],
 	    	}
 	    },
 	    mounted:function(){
@@ -89,10 +89,26 @@
 				}).catch((err) => {
 				    console.error(err)
 				})
-	    	},
+
+				db.sync(remoteDb, {
+					live: true,
+					retry: true
+				}).on('change', function (change) {
+  					// something changed!
+				}).on('paused', function (info) {
+					// replication was paused, usually because of a lost connection
+				}).on('active', function (info) {
+					// replication was resumed
+				}).on('error', function (err) {
+					// totally unhandled error (shouldn't happen)
+				});
+
+			},
+
 	    	emitReport: function(report) {
 	    		this.$emit("selected", report)
 	    	},
+
 	    	pdfGenerator: function(report, User){
 	    		var doc = new jsPDF()
 	    		var cptLine = 5

@@ -30,6 +30,8 @@
 
 <script type="javascript">
 
+var db = new PouchDB('reports')
+
 import CrudReport from './crudReport'
 import Report from './report'
 import Section from './section'
@@ -73,7 +75,7 @@ export default {
             }
     	}
     }
-}
+};
 
 </script>
 

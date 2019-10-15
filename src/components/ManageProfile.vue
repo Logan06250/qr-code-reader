@@ -60,8 +60,11 @@
 <script>
 
   import { Slide } from 'vue-burger-menu'
+
   var db = new PouchDB("User")
   console.log("Local database created and imported")
+
+
   export default{
   data(){
           return{
@@ -116,7 +119,7 @@
       })
     }
   }
-}
+};
 </script>
 
 <style>
