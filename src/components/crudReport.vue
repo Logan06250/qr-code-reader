@@ -1,22 +1,15 @@
 <template>
-	<div style="padding-top: 14%">
+	<div style="padding-top: 50px">
 		<div style="margin-top: 0px; margin-left: 10px">
 			<button type="button" @click="addReport()" class="btn btn-info" >Add a report</button>
 		</div>
-
-		<div class="container-fluid" v-for="report in reports" :key="report._id" style="margin-top: 3px">
-			<div class="row">
-    			<div class="col">
-					<button type="button" class="btn" @click="emitReport(report)">{{ report.name }} </button>
-				</div>
-				<div class="col">
-					<button  class="btn btn-circle btn-danger" @click="deleteReport(report)" style="margin-right: 10px; width: 45px;
-    height: 45px; font-size: 15px;">X</button>
-					<button  class="btn btn-circle" @click="pdfGenerator(report)" style="background-color: #2F4558; color: #FFF; width: 45px;
-    height: 45px; font-size: 15px;">PDF</button>
-				</div>
-			</div>
-			<br>
+		<div class="input-group" v-for="report in reports" :key="report._id" style="margin-top: 5px; width: 100%">
+		  	<a class="form-control" @click="emitReport(report)"> {{ report.name }} </a>
+		  	<div class="input-group-append" id="button-addon4">
+		  		<button  class="btn btn-outline-info " @click="pdfGenerator(report)">Property</button>
+		  		<button  class="btn btn-outline-info " @click="pdfGenerator(report)">Get PDF</button>
+				<button  class="btn btn-danger" @click="deleteReport(report)">Delete</button>
+		  	</div>
 		</div>
 	</div>
 </template>
@@ -42,10 +35,10 @@
 	    },
 	    methods: {
 	    	addReport: function () {
-	    		var nexReportName = prompt("Enter a name")
+	    		var newReportName = prompt("Enter a name")
 	    		var report = {
 				    _id: new Date().toISOString(),
-				    name: nexReportName,
+				    name: newReportName,
 				    sections: [
 					]
 				}
@@ -89,21 +82,14 @@
 					live: true,
 					retry: true
 				}).on('change', function (change) {
-  					// something changed!
 				}).on('paused', function (info) {
-					// replication was paused, usually because of a lost connection
 				}).on('active', function (info) {
-					// replication was resumed
 				}).on('error', function (err) {
-					// totally unhandled error (shouldn't happen)
 				});
-
 			},
-
 	    	emitReport: function(report) {
 	    		this.$emit("selected", report)
 	    	},
-
 	    	pdfGenerator: function(report, User){
 	    		var doc = new jsPDF()
 	    		var cptLine = 5
@@ -300,15 +286,12 @@
 							doc.setTextColor(47,79,79)
 							doc.setFontType("bold")
 							currLine = 45
-
 	    			}
-
 
 					doc.setFontSize(20)
 					doc.setTextColor(47,79,79)
 					doc.setFontType("bold")
 					doc.text("Photos", 40, currLine)
-
 					currLine += 15
 
 					section.info.images.map(function (image) {
@@ -329,10 +312,9 @@
 							doc.setFontType("bold")
 							currLine = 45
 	    				}
-	    				doc.addImage(image,"jpeg", 40, currLine, 70, 70)
+	    				doc.addImage(image.src,"jpeg", 40, currLine, 70, 70)
 	    				currLine += 76
 	    			})
-
 					splitText = doc.splitTextToSize(section.info.note, 230)
 
 	    			if(isEnoughtLine(currLine + 35 + (splitText.length * 5))){ 
@@ -359,14 +341,12 @@
 					doc.setTextColor(47,79,79)
 					doc.setFontType("bold")
 					doc.text("Extra notes", 40, currLine)
-
 					currLine += 15
 
 					doc.setTextColor(0,0,0)
 					doc.setFontSize(12)
 					doc.setFontType("normal")
 					doc.text(splitText, 40, currLine)
-
 	    			sectionLine++
 	    		})
 

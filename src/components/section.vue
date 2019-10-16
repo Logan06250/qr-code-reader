@@ -1,5 +1,5 @@
 <template>
-	<div style="padding-top: 10%">
+	<div style="padding-top: 45px">
 		<h3>
 			<a  @click="eventEmitter(1)">  
 				<i class="fas fa-angle-left"></i>
@@ -10,38 +10,40 @@
 				{{ specificSection.name }}
 			</a>  
 		</h3>
-		<label >Text:</label>
-		<span id="save" @click="startDictation('SpeachToText')" class="btn btn-circle btn-danger fas fa-microphone " style="width: 35px;
-    height: 35px; font-size: 15px; margin: 10px;" ></span>
-     	<textarea type="text" class="form-control" id="SpeachToText" placeholder="Enter your text here"  style="word-break: break-word" cols="40" rows="5"> </textarea>
+		<label id="cmnLabel">Text:</label>
+
+		<span id="save" @click="startDictation('SpeachToText')" class="btn btn-circle btn-outline-danger fas fa-microphone" ></span>
+     	<textarea type="text" class="form-control text-justify" id="SpeachToText" placeholder="Enter your text here" rows="5"> </textarea>
      	<br>
-     	<video ref="video" id="video" width="300" height="300" autoplay></video>
+     	<video ref="video" id="video" width="100%" height="100%" autoplay></video>
      	<center>
      		<input class="inputfile" name="files" id="files" type="file" accept=".heic, .hevc, .heif, .pdf, .png, .gif, .jpg, .jpeg, .doc, .docx, application/msword, application/pdf" multiple @change="handleFileSelect()" capture>
-     		<label id="snap" class="btn btn-circle btn-info" style="width: 80px;
-    height: 80px; font-size: 20px; margin-top: -10px;" for="files"> Add Photo</label>
+     		<label id="snap" class="btn btn-lg btn-block btn-info" for="files"> Add Photo</label>
      	</center>
-
-     	<br>
-		<label >Note:</label>
-		<span id="save" @click="startDictation('NoteImput')" class="btn btn-circle btn-danger fas fa-microphone " style="width: 35px;
-    height: 35px; font-size: 15px; margin: 10px;" ></span>
-     	<textarea type="text" class="form-control" id="NoteImput" placeholder="Enter your note here"  cols="40" rows="5"> </textarea>
      	<br>
      	<center>
-     		<button  id="save" @click="saveButton(specificSection)" class="btn btn-circle btn-info" style="width: 60px;
-    height: 60px; font-size: 15px;">Save</button>
-
-			<div class="card" style="width: 80%; margin-top: 20px" v-for="image in images">
-			  <img :src="'data:image/png;base64,' + image" class="card-img-top">
-			  <div class="card-body">
-			    <a href="#" class="btn btn-danger" @click="deleteImage(image)">Delete</a>
-			  </div>
+	    	<div class="row">
+		  		<div class="col-md-6" v-for="image in images">
+					<div class="card border-secondary">
+					  	<img :src="'data:image/png;base64,' + image.src" class="card-img-top rounded ">
+					  	<div class="card-body">
+						  	<label class="card-title">Photo information:</label>
+						  	<span id="save" @click="startDictation(image._id)" class="btn btn-circle btn-outline-danger fas fa-microphone" ></span>
+						  	<div>
+						  		<textarea type="text" :id="image._id" class="form-control text-justify" :value="image.text" rows="5"> </textarea>
+						  	</div>
+						    <button href="#" id="deleteImageButton" class="btn btn-block btn-danger" @click="deleteImage(image)">Delete the photo</button>
+					  	</div>
+					</div>
+				</div>
 			</div>
-
-			<canvas id="canvas" width="100" height="100"></canvas>
-
 		</center>
+		<canvas id="canvas" width="100" height="100"></canvas>
+		<br>
+		<label id="cmnLabel">Summary:</label>
+		<span id="save" @click="startDictation('NoteImput')" class="btn btn-circle btn-outline-danger fas fa-microphone"></span>
+     	<textarea type="text" class="form-control text-justify" id="NoteImput" placeholder="Enter your note here" rows="5"> </textarea>
+		<button  id="saveButton" @click="saveButton(specificSection)" class="btn btn-lg btn-block btn-info">Save all informations</button>
 	</div>
 </template>
 
@@ -131,15 +133,15 @@
 
 			   reader.onload = function () {
 			   	console.log(reader.result)
-			     tempImage.push(reader.result.replace(/^data:image\/(png|jpg);base64,/, ""));
+			     tempImage.push({src: reader.result.replace(/^data:image\/(png|jpg);base64,/, ""), text: "", _id: new Date().toISOString()});
 			   };
 			},
 			deleteImage: function (image) {
-				let tempVar = this.specificSection
+				let thisSectionId = this.specificSection._id
 				db.get(this.specificReport._id).then(function(doc) {
 					doc.section = doc.sections.map(function (section) {
-						if(section._id == tempVar._id){
-							section.info.images = section.info.images.filter((value, index) => value != image)
+						if(section._id == thisSectionId){
+							section.info.images = section.info.images.filter((value, index) => value._id != image_id)
 						}
 					})
 					console.log("Image deleted")
@@ -147,7 +149,8 @@
 				}).catch(function (err) {
 				  console.log(err);
 				});
-				this.images.splice(image, 1)
+				var delImage = this.images.indexOf(image)
+				this.images.splice(delImage, 1)
 			},
 	    	eventEmitter: function(section) {
 	    		this.$emit("selected", section)
@@ -162,6 +165,9 @@
 	display: none;
 }
 
+#saveButton, #deleteImageButton {
+	margin-top: 10px;
+}
 .inputfile {
 	width: 0.1px;
 	height: 0.1px;
@@ -169,5 +175,22 @@
 	overflow: hidden;
 	position: absolute;
 	z-index: -1;
+}
+
+.card {
+	text-align: left;
+	width: 96%; 
+	margin-top: 2%;
+}
+
+.fa-microphone {
+	width: 35px;
+    height: 35px; 
+    font-size: 15px; 
+    margin: 10px;
+}
+
+#cmnLabel {
+	margin-left: 5px;
 }
 </style>

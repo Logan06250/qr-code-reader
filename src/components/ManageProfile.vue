@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div id="Navigation">
+    <div id="Navigation" class="sticky-top">
       <Slide id="menu">
         <a id="home" href='#/'> 
           <span>Home</span>  
@@ -139,13 +139,11 @@ form {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    margin-bot: 10px;
-    margin-top: -6%;
+    margin-top: 0%;
     width:100%;
-    height:7.5%;
+    height:62px;
     z-index:10;
     display:block;
-    position: fixed;
     color: #FFF;
 }
 .bm-burger-button {

@@ -1,5 +1,5 @@
 <template>
-	<div style="padding-top: 10%">
+	<div style="padding-top: 45px">
 		<h3>
 			<a  @click="eventEmitter(0)">  
 				<i class="fas fa-angle-left"></i>

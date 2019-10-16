@@ -1,19 +1,19 @@
 <template>
 	<div>
-        <div id="Navigation">
+        <div id="Navigation" class="sticky-top">
             <Slide id="menu">
-            <a id="home" href='#/'> 
-                <span>Home</span>  
-            </a>
-            <a id="home" href='#/MyReports'> 
-                <span>Reports</span>  
-            </a>
-            <a id="home" href='#/ManageProfile'> 
-                <span>Profile</span>  
-            </a>
+                <a id="home" href='#/'> 
+                    <span>Home</span>  
+                </a>
+                <a id="home" href='#/MyReports'> 
+                    <span>Reports</span>  
+                </a>
+                <a id="home" href='#/ManageProfile'> 
+                    <span>Profile</span>  
+                </a>
             </Slide>
             <h1 style="margin-left: 80px; padding-top: 5px">{{ title }}</h1>
-            <div style="padding-top: 1px"></div>
+            <div></div>
         </div>
 		<div v-if="statement == 0">
 			<CrudReport v-on:selected="selectedReport($event)"></CrudReport>
@@ -83,15 +83,8 @@ export default {
 <style>
 
 #Navigation {
-
     background-color: #2F4558;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    margin-bot: 10px;
-    margin-top: -6%;
-    width:100%;
+    width: 100%;
     height:62px;
     z-index:10;
     display:block;
@@ -106,5 +99,9 @@ export default {
       top: 15px;
       cursor: pointer;
     }
+
+    h1 {
+margin: 0;
+}
 
 </style>
