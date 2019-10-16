@@ -13,6 +13,7 @@
   import Report from './components/report'
   import Section from './components/section'
   import CrudReport from './components/crudReport'
+  import PropertyForm from './components/propertyForm'
   import { Slide } from 'vue-burger-menu'
 
   export default {
@@ -24,7 +25,8 @@
       Report,
       Section,
       CrudReport,
-      Slide
+      Slide,
+      PropertyForm
     },
     methods: {
     }

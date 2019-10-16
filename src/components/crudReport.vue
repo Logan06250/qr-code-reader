@@ -6,7 +6,7 @@
 		<div class="input-group" v-for="report in reports" :key="report._id" style="margin-top: 5px; width: 100%">
 		  	<a class="form-control" @click="emitReport(report)"> {{ report.name }} </a>
 		  	<div class="input-group-append" id="button-addon4">
-		  		<button  class="btn btn-outline-info " @click="pdfGenerator(report)">Property</button>
+		  		<button  class="btn btn-outline-info " @click="emitReportForProperty(report)">Property</button>
 		  		<button  class="btn btn-outline-info " @click="pdfGenerator(report)">Get PDF</button>
 				<button  class="btn btn-danger" @click="deleteReport(report)">Delete</button>
 		  	</div>
@@ -88,7 +88,10 @@
 				});
 			},
 	    	emitReport: function(report) {
-	    		this.$emit("selected", report)
+	    		this.$emit("selected", [1, report])
+	    	},
+	    	emitReportForProperty: function(report) {
+	    		this.$emit("selected", [2, report])
 	    	},
 	    	pdfGenerator: function(report, User){
 	    		var doc = new jsPDF()

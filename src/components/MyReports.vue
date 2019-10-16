@@ -24,6 +24,9 @@
 		<div v-if="statement == 2">
 			<Section :groupedProps="[specificReport, specificSection]" v-on:selected="sectionEventHandler($event)"></Section>
 		</div>
+        <div v-if="statement == 3">
+            <PropertyForm :specificReport="specificReport" v-on:selected="reportEventHandler($event)"></PropertyForm>
+        </div>
 	</div>
 </template>
 
@@ -35,6 +38,7 @@ var db = new PouchDB('reports')
 import CrudReport from './crudReport'
 import Report from './report'
 import Section from './section'
+import PropertyForm from './propertyForm'
 import { Slide } from 'vue-burger-menu'
 
 
@@ -52,12 +56,19 @@ export default {
       CrudReport,
       Section,
       Report,
+      PropertyForm,
       Slide
     },
     methods: {
     	selectedReport: function (specificReport) {
-    		this.specificReport = specificReport
-    		this.statement = 1;
+
+            if(specificReport[0] == 1){
+                this.specificReport = specificReport
+                this.statement = 1;
+            }else {
+                this.specificReport = specificReport
+                this.statement = 3;
+            }
     	},
     	reportEventHandler: function (specificSection) {
     		if(specificSection == 0){
