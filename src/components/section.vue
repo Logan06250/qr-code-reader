@@ -30,7 +30,7 @@
 						  	<label class="card-title">Photo information:</label>
 						  	<span id="save" @click="startDictation(image._id)" class="btn btn-circle btn-outline-danger fas fa-microphone" ></span>
 						  	<div>
-						  		<textarea type="text" :id="image._id" class="form-control text-justify" :value="image.text" rows="5"> </textarea>
+						  		<textarea type="text" :id="image._id" class="form-control text-justify" rows="5" placeholder="Enter your text here"> {{ image.text }} </textarea>
 						  	</div>
 						    <button href="#" id="deleteImageButton" class="btn btn-block btn-danger" @click="deleteImage(image)">Delete the photo</button>
 					  	</div>
@@ -41,8 +41,8 @@
 		<canvas id="canvas" width="100" height="100"></canvas>
 		<br>
 		<label id="cmnLabel">Summary:</label>
-		<span id="save" @click="startDictation('NoteImput')" class="btn btn-circle btn-outline-danger fas fa-microphone"></span>
-     	<textarea type="text" class="form-control text-justify" id="NoteImput" placeholder="Enter your note here" rows="5"> </textarea>
+		<span id="save" @click="startDictation('summaryImput')" class="btn btn-circle btn-outline-danger fas fa-microphone"></span>
+     	<textarea type="text" class="form-control text-justify" id="summaryImput" placeholder="Enter your sumary here" rows="5"> </textarea>
 		<button  id="saveButton" @click="saveButton(specificSection)" class="btn btn-lg btn-block btn-info">Save all informations</button>
 	</div>
 </template>
@@ -76,9 +76,9 @@
 	    	var context = canvas.getContext('2d')
 	   		this.specificReport = this.groupedProps[0]
 	   		this.specificSection = this.groupedProps[1]
-	   		if(this.specificSection.info.text != null && this.specificSection.info.note != null){
+	   		if(this.specificSection.info.text != null && this.specificSection.info.summary != null){
 	   			document.getElementById("SpeachToText").value = this.specificSection.info.text
-	   			document.getElementById("NoteImput").value = this.specificSection.info.note
+	   			document.getElementById("summaryImput").value = this.specificSection.info.summary
 	   		}
 	   		if(this.specificSection.info.images.length != 0){
 	   			let tempImages = []
@@ -106,7 +106,19 @@
 			    }
 	    	},
 	    	saveButton: function(specificSection) {
-	    		let sectionInformation = { text: document.getElementById("SpeachToText").value, note: document.getElementById("NoteImput").value, images: this.images}
+
+	    		var imagesToPush = []
+
+	    		this.images.map(function (image) {
+	    			imagesToPush.push(
+	    				{
+		    				_id: image._id,
+		    				src: image.src,
+		    				text: document.getElementById(image._id).value
+	    				}	
+	    			)
+	    		})
+	    		let sectionInformation = { text: document.getElementById("SpeachToText").value, summary: document.getElementById("summaryImput").value, images: imagesToPush }
 	    		this.specificSection.info = sectionInformation
 				db.get(this.specificReport._id).then(function(doc) {
 					doc.sections.map(function (section) {
@@ -141,7 +153,7 @@
 				db.get(this.specificReport._id).then(function(doc) {
 					doc.section = doc.sections.map(function (section) {
 						if(section._id == thisSectionId){
-							section.info.images = section.info.images.filter((value, index) => value._id != image_id)
+							section.info.images = section.info.images.filter((value, index) => value._id != image._id)
 						}
 					})
 					console.log("Image deleted")

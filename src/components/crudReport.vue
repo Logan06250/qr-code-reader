@@ -270,7 +270,7 @@
 					doc.setFontSize(12)
 					doc.setFontType("normal")
 					splitText = doc.splitTextToSize(section.info.text, 140)
-					currLine += (splitText.length * 5) + 10
+					currLine += (splitText.length * 4) + 10
 					doc.text(splitText, 40, 65)
 
 					if(isEnoughtLine(currLine)){ 
@@ -316,9 +316,20 @@
 							currLine = 45
 	    				}
 	    				doc.addImage(image.src,"jpeg", 40, currLine, 70, 70)
-	    				currLine += 76
+
+	    				doc.setTextColor(47,79,79)
+						doc.setFontSize(10)
+
+						splitText = doc.splitTextToSize(image.text, 75)
+
+						doc.text(splitText, 120, currLine)
+						if(splitText.length * 4 > 76) {
+							currLine += splitText.length * 5
+						} else {
+							currLine += 76
+						}
 	    			})
-					splitText = doc.splitTextToSize(section.info.note, 230)
+					splitText = doc.splitTextToSize(section.info.summary, 230)
 
 	    			if(isEnoughtLine(currLine + 35 + (splitText.length * 5))){ 
 	    					doc.addPage()
@@ -343,7 +354,7 @@
 					doc.setFontSize(20)
 					doc.setTextColor(47,79,79)
 					doc.setFontType("bold")
-					doc.text("Extra notes", 40, currLine)
+					doc.text("Summary", 40, currLine)
 					currLine += 15
 
 					doc.setTextColor(0,0,0)

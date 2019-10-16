@@ -63,10 +63,10 @@ export default {
     	selectedReport: function (specificReport) {
 
             if(specificReport[0] == 1){
-                this.specificReport = specificReport
+                this.specificReport = specificReport[1]
                 this.statement = 1;
             }else {
-                this.specificReport = specificReport
+                this.specificReport = specificReport[1]
                 this.statement = 3;
             }
     	},
