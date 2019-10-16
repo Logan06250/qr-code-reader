@@ -37,7 +37,7 @@
         </div>
       </div>
       <center>
-        <button id="save" @click="newProperty ()" class="btn btn-circle btn-info" style="width: 60px;
+        <button id="save" @click="newProperty()" class="btn btn-circle btn-info" style="width: 60px;
     height: 60px; font-size: 15px; margin: 10px; margin-top: -10px" href="/">Submit</button>
       </center>
     </form>
@@ -47,11 +47,12 @@
 
   import { Slide } from 'vue-burger-menu'
 
-  var db = new PouchDB("Property")
+  var db = new PouchDB("reports")
   console.log("Local database created and imported")
 
 
   export default{
+    props: ['specificReport'],
   data(){
           return{
             Property:[
@@ -61,38 +62,42 @@
   components: {
       Slide
   },
+  mounted: function (){
+db.get(this.specificReport._id).then(function (doc) {
+          document.getElementById("propertyAdress").value = doc.property.propertyAdress
+          document.getElementById("clientName").value = doc.property.clientName
+          document.getElementById("dateOfInspection").value = doc.property.dateOfInspection
+          document.getElementById("typeOfProperty").value = doc.property.typeOfProperty
+          document.getElementById("YearThePropertyWasBuilt").value = doc.property.YearThePropertyWasBuilt
+          document.getElementById("YearThePropertyWasExtended").value = doc.property.YearThePropertyWasExtended
+          document.getElementById("YearThePropertyWasConverted").value = doc.property.YearThePropertyWasConverted
+          document.getElementById("InformationAboutFlat").value = doc.property.InformationAboutFlat
+      }).catch(function (err) {
+        console.log(err)
+      })
+  },
     
     methods: {
     newProperty: function(){
-      db.get('123456789').then(function (doc) {
-        doc.propertyAdress = document.getElementById("propertyAdress").value
-        doc.clientName =  document.getElementById("clientName").value
-        doc.dateOfInspection = document.getElementById("dateOfInspection").value
-        doc.typeOfProperty = document.getElementById("typeOfProperty").value
-        doc.YearThePropertyWasBuilt = document.getElementById("YearThePropertyWasBuilt").value
-        doc.YearThePropertyWasExtended = document.getElementById("YearThePropertyWasExtended").value
-        doc.YearThePropertyWasConverted = document.getElementById("YearThePropertyWasConverted").value
-        doc.InformationAboutFlat = document.getElementById("InformationAboutFlat").value
-        console.log(doc)
-        return db.put(doc);
+      db.get(this.specificReport._id).then(function (doc) {
+          doc.property = {
+            propertyAdress : document.getElementById("propertyAdress").value,
+            clientName :  document.getElementById("clientName").value,
+            dateOfInspection : document.getElementById("dateOfInspection").value,
+            typeOfProperty : document.getElementById("typeOfProperty").value,
+            YearThePropertyWasBuilt : document.getElementById("YearThePropertyWasBuilt").value,
+            YearThePropertyWasExtended : document.getElementById("YearThePropertyWasExtended").value,
+            YearThePropertyWasConverted : document.getElementById("YearThePropertyWasConverted").value,
+            InformationAboutFlat : document.getElementById("InformationAboutFlat").value,
+          }
+          return db.put(doc);
       }).catch(function (err) {
-        if (err.name === 'not_found') {
-            var property  = {
-              _id : "123456789",
-              propertyAdress : document.getElementById("propertyAdress").value,
-              clientName :  document.getElementById("clientName").value,
-              dateOfInspection : document.getElementById("dateOfInspection").value,
-              typeOfProperty : document.getElementById("typeOfProperty").value,
-              YearThePropertyWasBuilt : document.getElementById("YearThePropertyWasBuilt").value,
-              YearThePropertyWasExtended : document.getElementById("YearThePropertyWasExtended").value,
-              YearThePropertyWasConverted : document.getElementById("YearThePropertyWasConverted").value,
-              InformationAboutFlat : document.getElementById("InformationAboutFlat").value,
-            }
-            return db.put(property)
-        } else {
-          throw err;
-        }
+        console.log(err)
       })
+      this.emitEvent()
+    },
+    emitEvent: function() {
+      this.$emit("selected", 0)
     }
   }
 };

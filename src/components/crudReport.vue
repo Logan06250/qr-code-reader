@@ -40,7 +40,9 @@
 				    _id: new Date().toISOString(),
 				    name: newReportName,
 				    sections: [
-					]
+					],
+					property: [
+					],
 				}
 				db.put(report).then((res) => {
 				    console.log("Report inserted")
