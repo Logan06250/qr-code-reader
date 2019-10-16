@@ -21,19 +21,19 @@
         </div>
         <div class="form-group col-md-6">
           <label for="YearThePropertyWasBuilt">Year the property was built:</label>
-          <input type="text" class="form-control" id="YearThePropertyWasBuilt">
+          <input type="text" @keypress="isNumber($event)" class="form-control" id="YearThePropertyWasBuilt">
         </div>
-        <div class="form-group col-md-10">
+        <div class="form-group col-md-6">
         <label for="YearThePropertyWasExtended">Year the property was extended:</label>
-        <input type="text" class="form-control" id="YearThePropertyWasExtended">
+        <input type="text" @keypress="isNumber($event)" class="form-control" id="YearThePropertyWasExtended">
       </div>
-        <div class="form-group col-md-2">
+        <div class="form-group col-md-6">
           <label for="YearThePropertyWasConverted">Year the property was converted:</label>
-          <input type="text" class="form-control" id="YearThePropertyWasConverted">
+          <input type="text" @keypress="isNumber($event)" class="form-control" id="YearThePropertyWasConverted">
         </div>
-        <div class="form-group col-md-2">
+        <div class="form-group col-md-12">
           <label for="InformationAboutFlats">Information about flats:</label>
-          <input type="text" class="form-control" id="InformationAboutFlat" >
+          <textarea type="text" class="form-control" id="InformationAboutFlat" rows="5" ></textarea>
         </div>
       </div>
     </form>
@@ -75,6 +75,15 @@
       })
   },
     methods: {
+      isNumber: function(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+          evt.preventDefault();;
+        } else {
+          return true;
+        }
+      },
     newProperty: function(){
       var propertySubmitted = {
             propertyAdress: document.getElementById("propertyAdress").value,
