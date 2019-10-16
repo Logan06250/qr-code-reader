@@ -13,7 +13,7 @@
         </div>
         <div class="form-group col-md-6">
         <label for="dateOfInspection">Date of inspection:</label>
-        <input type="text" class="form-control" id="dateOfInspection">
+        <input type="date" class="form-control" id="dateOfInspection">
         </div>
         <div class="form-group col-md-6">
           <label for="typeOfProperty">Type of property:</label>
