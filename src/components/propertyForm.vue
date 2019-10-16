@@ -36,11 +36,9 @@
           <input type="text" class="form-control" id="InformationAboutFlat" >
         </div>
       </div>
-      <center>
-        <button id="save" @click="newProperty()" class="btn btn-circle btn-info" style="width: 60px;
-    height: 60px; font-size: 15px; margin: 10px; margin-top: -10px" href="/">Submit</button>
-      </center>
     </form>
+    <button id="save" @click="newProperty()" class="btn btn-circle btn-info" style="width: 60px;
+    height: 60px; font-size: 15px; margin: 10px; margin-top: -10px">Submit</button>
   </div>
 </template>
 <script>
@@ -55,7 +53,7 @@
     props: ['specificReport'],
   data(){
           return{
-            Property:[
+            property:[
             ]
         }
       },
@@ -63,7 +61,7 @@
       Slide
   },
   mounted: function (){
-db.get(this.specificReport._id).then(function (doc) {
+    db.get(this.specificReport._id).then(function (doc) {
           document.getElementById("propertyAdress").value = doc.property.propertyAdress
           document.getElementById("clientName").value = doc.property.clientName
           document.getElementById("dateOfInspection").value = doc.property.dateOfInspection
@@ -76,28 +74,28 @@ db.get(this.specificReport._id).then(function (doc) {
         console.log(err)
       })
   },
-    
     methods: {
     newProperty: function(){
-      db.get(this.specificReport._id).then(function (doc) {
-          doc.property = {
-            propertyAdress : document.getElementById("propertyAdress").value,
-            clientName :  document.getElementById("clientName").value,
-            dateOfInspection : document.getElementById("dateOfInspection").value,
-            typeOfProperty : document.getElementById("typeOfProperty").value,
-            YearThePropertyWasBuilt : document.getElementById("YearThePropertyWasBuilt").value,
-            YearThePropertyWasExtended : document.getElementById("YearThePropertyWasExtended").value,
-            YearThePropertyWasConverted : document.getElementById("YearThePropertyWasConverted").value,
-            InformationAboutFlat : document.getElementById("InformationAboutFlat").value,
+      var propertySubmitted = {
+            propertyAdress: document.getElementById("propertyAdress").value,
+            clientName: document.getElementById("clientName").value,
+            dateOfInspection: document.getElementById("dateOfInspection").value,
+            typeOfProperty: document.getElementById("typeOfProperty").value,
+            YearThePropertyWasBuilt: document.getElementById("YearThePropertyWasBuilt").value,
+            YearThePropertyWasExtended: document.getElementById("YearThePropertyWasExtended").value,
+            YearThePropertyWasConverted: document.getElementById("YearThePropertyWasConverted").value,
+            InformationAboutFlat: document.getElementById("InformationAboutFlat").value,
           }
+      db.get(this.specificReport._id).then(function (doc) {
+          doc.property = propertySubmitted
           return db.put(doc);
       }).catch(function (err) {
         console.log(err)
       })
-      this.emitEvent()
+      this.emitEvent(0)
     },
-    emitEvent: function() {
-      this.$emit("selected", 0)
+    emitEvent: function(event) {
+      this.$emit("selected", event)
     }
   }
 };

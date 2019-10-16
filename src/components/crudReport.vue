@@ -108,10 +108,13 @@
 	    		doc.setFillColor(31,31,20)
 	    		doc.setFontSize(10)
 	    		doc.text("Property adress", 75, 163)
+	    		doc.text(report.property.propertyAdress, 110, 163)
 				doc.rect(105, 160, 95, 60)
 				doc.text("Client's name", 80, 228)
+				doc.text(report.property.clientName, 110, 228)
 				doc.rect(105, 225, 95, 10)
 				doc.text("Date of inspection", 72, 243)
+				doc.text(report.property.dateOfInspection, 110, 228)
 				doc.rect(105, 240, 95, 10)
 
 				doc.setFontSize(40);

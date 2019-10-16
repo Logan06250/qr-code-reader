@@ -25,7 +25,7 @@
 			<Section :groupedProps="[specificReport, specificSection]" v-on:selected="sectionEventHandler($event)"></Section>
 		</div>
         <div v-if="statement == 3">
-            <PropertyForm :specificReport="specificReport" v-on:selected="backtoMyreport($event)"></PropertyForm>
+            <PropertyForm :specificReport="specificReport" v-on:selected="backToMyreport($event)"></PropertyForm>
         </div>
 	</div>
 </template>
@@ -70,8 +70,8 @@ export default {
                 this.statement = 3;
             }
     	},
-        backtoMyreport: function (event){
-            this.statement = 0
+        backToMyreport: function (event){
+            this.statement = event
         },
     	reportEventHandler: function (specificSection) {
     		if(specificSection == 0){
