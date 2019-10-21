@@ -1,6 +1,11 @@
 <template>
-  <div class="container">
-
+  <div class="container" style="padding-top: 46px;">
+    <h3>
+      <a @click="eventEmitter(0)">  
+        <i class="fas fa-angle-left"></i>
+        {{ specificReport.name }}
+      </a> 
+    </h3>
     <form>
       <div class="form-row">
         <div class="form-group col-md-6">
@@ -37,8 +42,7 @@
         </div>
       </div>
     </form>
-    <button id="save" @click="newProperty()" class="btn btn-circle btn-info" style="width: 60px;
-    height: 60px; font-size: 15px; margin: 10px; margin-top: -10px">Submit</button>
+    <button id="save" @click="newProperty()" class="btn btn-lg btn-block btn-info" >Submit</button>
   </div>
 </template>
 <script>
@@ -62,6 +66,8 @@
   },
   mounted: function (){
     db.get(this.specificReport._id).then(function (doc) {
+      if(doc.property.length == 0){
+      }else {
           document.getElementById("propertyAdress").value = doc.property.propertyAdress
           document.getElementById("clientName").value = doc.property.clientName
           document.getElementById("dateOfInspection").value = doc.property.dateOfInspection
@@ -70,11 +76,15 @@
           document.getElementById("YearThePropertyWasExtended").value = doc.property.YearThePropertyWasExtended
           document.getElementById("YearThePropertyWasConverted").value = doc.property.YearThePropertyWasConverted
           document.getElementById("InformationAboutFlat").value = doc.property.InformationAboutFlat
+        }
       }).catch(function (err) {
         console.log(err)
       })
   },
     methods: {
+      eventEmitter: function(section) {
+          this.$emit("selected", section)
+      },
       isNumber: function(evt) {
         evt = (evt) ? evt : window.event;
         var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -111,36 +121,9 @@
 </script>
 
 <style>
-.container {
-  margin-left: -15px;
-}
-.form-row {
-  margin-left: 5px;
-}
 
-form {
-  padding-top: 46px;
-}
-#Navigation {
-    background-color: #2F4558;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    margin-top: 0%;
-    width:100%;
-    height:62px;
-    z-index:10;
-    display:block;
-    color: #FFF;
-}
-.bm-burger-button {
-      position: fixed;
-      width: 36px;
-      height: 30px;
-      left: 20px;
-      top: 15px;
-      cursor: pointer;
-    }
+  #save {
+    width: 100%;
+  }
 
 </style>

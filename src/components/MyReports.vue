@@ -16,7 +16,7 @@
             <div></div>
         </div>
 		<div v-if="statement == 0">
-			<CrudReport v-on:selected="selectedReport($event)"></CrudReport>
+			<CrudReport v-on:selected="selectedReport($event)"></CrudReport>   
 		</div>
 		<div v-if="statement == 1">
 			<Report :specificReport="specificReport" v-on:selected="reportEventHandler($event)"></Report>
@@ -61,17 +61,16 @@ export default {
     },
     methods: {
     	selectedReport: function (specificReport) {
-
             if(specificReport[0] == 1){
                 this.specificReport = specificReport[1]
-                this.statement = 1;
+                this.statement = 1
             }else {
                 this.specificReport = specificReport[1]
-                this.statement = 3;
+                this.statement = 3
             }
     	},
         backToMyreport: function (event){
-            this.statement = event
+            this.statement = 0
         },
     	reportEventHandler: function (specificSection) {
     		if(specificSection == 0){
@@ -105,17 +104,14 @@ export default {
     position: fixed;
     color: #FFF;
 }
-.bm-burger-button {
-      position: fixed;
-      width: 36px;
-      height: 30px;
-      left: 20px;
-      top: 15px;
-      cursor: pointer;
-    }
 
-    h1 {
-margin: 0;
+.bm-burger-button {
+    position: fixed;
+    width: 36px;
+    height: 30px;
+    left: 20px;
+    top: 15px;
+    cursor: pointer;
 }
 
 </style>

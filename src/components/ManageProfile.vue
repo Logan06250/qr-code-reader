@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div style="padding-top: 45px">
     <div id="Navigation" class="sticky-top">
       <Slide id="menu">
         <a id="home" href='#/'> 
@@ -16,7 +16,7 @@
       <div style="padding-top: 1px"></div>
     </div>
 
-    <form>
+    <form style="margin-right: 4%; margin-left: 4%">
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="firstName">First Name:</label>
@@ -26,8 +26,10 @@
           <label for="lastName">Last Name:</label>
           <input type="text" class="form-control" id="lastName" placeholder="Last Name">
         </div>
-        <label for="inputEmail">Your Email:</label>
-        <input type="email" class="form-control" id="inputEmail" placeholder="email@gmail.com">
+        <div class="form-group col-md-6">
+          <label for="inputEmail">Your Email:</label>
+          <input type="email" class="form-control" id="inputEmail" placeholder="email@gmail.com">
+        </div>
         <div class="form-group col-md-6">
           <label for="companyName">Company Name:</label>
           <input type="text" class="form-control" id="companyName" placeholder="Terretalabs">
@@ -36,7 +38,7 @@
           <label for="inputEmailCompany">Company Email:</label>
           <input type="email" class="form-control" id="inputEmailCompany" placeholder="email@gmail.com">
         </div>
-        <div class="form-group col-md-10">
+        <div class="form-group col-md-8">
       <label for="inputAddress">Address</label>
         <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
       </div>
@@ -50,11 +52,8 @@
           <input type="text" @keypress="isNumber($event)"class="form-control" id="phone" placeholder="0 895 896 180">
         </div>
       </div>
-      <center>
-        <button id="save" @click="newUser()" class="btn btn-circle btn-info" style="width: 60px;
-    height: 60px; font-size: 15px; margin: 10px; margin-top: -10px" href="/">Submit</button>
-      </center>
     </form>
+    <button id="save" @click="newUser()" class="btn btn-lg btn-block btn-info" href="/">Submit</button>
   </div>
 </template>
 <script>
@@ -73,6 +72,22 @@
             ]
         }
       },
+  mounted: function () {
+    db.get('123456789').then(function (doc) {
+        document.getElementById("firstName").value = doc.firstName
+        document.getElementById("lastName").value = doc.lastName 
+        document.getElementById("inputEmail").value = doc.yourEmail
+        document.getElementById("companyName").value = doc.companyName
+        document.getElementById("inputEmailCompany").value = doc.emailCompany
+        document.getElementById("inputAddress").value = doc.address
+        document.getElementById("inputZip").value = doc.zipCode
+        document.getElementById("phone").value = doc.phone
+        console.log(doc)
+        return db.put(doc);
+      }).catch(function (err) {
+        throw err;
+      })
+  },
   components: {
       Slide
   },
@@ -123,16 +138,7 @@
 </script>
 
 <style>
-.container {
-  margin-left: -15px;
-}
-.form-row {
-  margin-left: 5px;
-}
 
-form {
-  padding-top: 46px;
-}
 #Navigation {
     background-color: #2F4558;
     -webkit-background-size: cover;
@@ -154,5 +160,8 @@ form {
       top: 15px;
       cursor: pointer;
     }
+#save {
+  width: 100%;
+}
 
 </style>

@@ -173,36 +173,35 @@
 
 <style>
 
-#video, #canvas {
-	display: none;
-}
+	#video, #canvas {
+		display: none;
+	}
 
-#saveButton, #deleteImageButton {
-	margin-top: 10px;
-}
-.inputfile {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
-}
+	#saveButton, #deleteImageButton {
+		margin-top: 10px;
+	}
+	.inputfile {
+		width: 0.1px;
+		height: 0.1px;
+		opacity: 0;
+		overflow: hidden;
+		position: absolute;
+		z-index: -1;
+	}
+	.card {
+		text-align: left;
+		width: 96%; 
+		margin-top: 2%;
+	}
 
-.card {
-	text-align: left;
-	width: 96%; 
-	margin-top: 2%;
-}
+	.fa-microphone {
+		width: 35px !important;
+	    height: 35px; 
+	    font-size: 15px; 
+	    margin: 10px;
+	}
 
-.fa-microphone {
-	width: 35px;
-    height: 35px; 
-    font-size: 15px; 
-    margin: 10px;
-}
-
-#cmnLabel {
-	margin-left: 5px;
-}
+	#cmnLabel {
+		margin-left: 5px;
+	}
 </style>
