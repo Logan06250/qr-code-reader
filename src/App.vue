@@ -10,10 +10,6 @@
   import Home from './components/Home'
   import ManageProfile from './components/ManageProfile'
   import MyReports from './components/MyReports'
-  import Report from './components/report'
-  import Section from './components/section'
-  import CrudReport from './components/crudReport'
-  import PropertyForm from './components/propertyForm'
   import { Slide } from 'vue-burger-menu'
 
   export default {
@@ -22,11 +18,7 @@
       Home,
       ManageProfile,
       MyReports,
-      Report,
-      Section,
-      CrudReport,
-      Slide,
-      PropertyForm
+      Slide
     },
     methods: {
     }
