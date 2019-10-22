@@ -1,7 +1,7 @@
 <template>
 	<div style="padding-top: 50px">
 		<div style="margin-top: 0px; margin-left: 10px">
-			<button type="button" @click="addReport()" class="btn btn-info" >Add a report</button>
+			<button type="button" @click="addReport()" class="btn btn-info" > <i class="far fa-edit"></i> Add a report </button>
 		</div>
 		<div class="alert alert-warning alert-dismissible fade show" role="alert" id="alertDiv">
 		  <strong>PDF can't be generated !</strong> <a id="alertText"> </a>
@@ -20,7 +20,7 @@
 		  	<div class="input-group-append" id="button-addon4">
 		  		<button  class="btn btn-outline-info " @click="emitReportForProperty(report)">Property</button>
 		  		<button  class="btn btn-outline-info " @click="pdfGenerator(report)">Get PDF</button>
-				<button  class="btn btn-danger" @click="deleteReport(report)">Delete</button>
+				<button  class="btn btn-danger" @click="deleteReport(report)"><i class="fas fa-trash-alt"></i></button>
 		  	</div>
 		</div>
 	</div>
@@ -82,7 +82,6 @@
 					    console.error(err)
 					})
 		        }
-	    		
 	    	},
 	    	deleteReport: function (report) {
 				var del = this.reports.indexOf(report)
@@ -96,7 +95,7 @@
 				this.reports.splice(del, 1)
 				if(this.reports.length == 0){
 		        	document.getElementById("strongAlertText").text = "You didn't have any report !"
-		        	document.getElementById("infoText").text = "You can create reports using the button above this alert."
+		        	document.getElementById("infoText").text = "You can create one using the button above this alert."
 					document.getElementById("infoDiv").style.display = "block"
 				}
 	    	},
@@ -107,7 +106,7 @@
 				    });
 				    if(doc.rows.length == 0){
 			        	document.getElementById("strongAlertText").text = "You didn't have any report !"
-			        	document.getElementById("infoText").text = "You can create reports using the button above this alert."
+			        	document.getElementById("infoText").text = "You can create one using the button above this alert."
 				    	document.getElementById("infoDiv").style.display = "block"
 				    }
 				}).catch((err) => {

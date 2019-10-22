@@ -40,6 +40,8 @@ import Report from './report'
 import Section from './section'
 import PropertyForm from './propertyForm'
 import { Slide } from 'vue-burger-menu'
+import { MarkerArea } from 'markerjs';
+
 
 
 export default {
@@ -57,7 +59,9 @@ export default {
       Section,
       Report,
       PropertyForm,
-      Slide
+      Slide,
+      MarkerArea,
+
     },
     methods: {
     	selectedReport: function (specificReport) {

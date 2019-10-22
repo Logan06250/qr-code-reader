@@ -10,6 +10,8 @@
 				{{ specificSection.name }}
 			</a>  
 		</h3>
+
+
 		<label id="cmnLabel">Text:</label>
 
 		<span id="save" @click="startDictation('SpeachToText')" class="btn btn-circle btn-outline-danger fas fa-microphone" ></span>
@@ -25,14 +27,27 @@
 	    	<div class="row">
 		  		<div class="col-md-6" v-for="image in images">
 					<div class="card border-secondary">
-					  	<img :src="'data:image/png;base64,' + image.src" class="card-img-top rounded ">
+					<div :id="image._id + 'markerControls'" class="input-group">
+						<input type="text" :id="image._id + 'name'" class="form-control" placeholder="Photo's name" :value="image.name">
+						<div class="input-group-append" id="button-addon4">
+							<div :id="image._id + 'editingPhotoDiv'">
+								<button @click="addText(image)" class="btn btn-outline-secondary"> <i class="fas fa-font"></i> </button>
+						    	<button @click="addArrow(image)" class="btn btn-outline-secondary"> <i class="fas fa-arrow-right"></i> </button>
+							</div>
+							<div :id="image._id + 'validatingPhotoDiv'" style="display: none">
+								<button @click="deleteMarker(image)" class="btn btn-outline-secondary"> <i class="fas fa-trash-alt"></i></button>
+						    	<button @click="render(image)" class="btn btn-outline-secondary"> <i class="fas fa-check"></i> </button>
+							</div>
+						</div>
+					</div>
+					  	<img :src="'data:image/png;base64,' + image.src" class="card-img-top rounded" :id="image._id + 'img'">
 					  	<div class="card-body">
 						  	<label class="card-title">Photo information:</label>
-						  	<span id="save" @click="startDictation(image._id)" class="btn btn-circle btn-outline-danger fas fa-microphone" ></span>
+						  	<span id="save" @click="startDictation(image._id + 'text')" class="btn btn-circle btn-outline-danger fas fa-microphone" ></span>
 						  	<div>
-						  		<textarea type="text" :id="image._id" class="form-control text-justify" rows="5" placeholder="Enter your text here"> {{ image.text }} </textarea>
+						  		<textarea type="text" :id="image._id + 'text'" class="form-control text-justify" rows="5" placeholder="Enter your text here"> {{ image.text }} </textarea>
 						  	</div>
-						    <button href="#" id="deleteImageButton" class="btn btn-block btn-danger" @click="deleteImage(image)">Delete the photo</button>
+						    <button href="#" id="deleteImageButton" class="btn btn-block btn-danger" @click="deleteImage(image)"><i class="fas fa-trash-alt"></i></button>
 					  	</div>
 					</div>
 				</div>
@@ -59,7 +74,7 @@
 	   			specificSection: 0,
 	   			context: 0,
 	   			file: 0,
-	   			images: []
+	   			images: [],
 	   		}
 	   },
 	   mounted:function(){
@@ -81,11 +96,15 @@
 	   			document.getElementById("summaryImput").value = this.specificSection.info.summary
 	   		}
 	   		if(this.specificSection.info.images.length != 0){
-	   			let tempImages = []
-	   			this.specificSection.info.images.map(function(image) {
-			    	tempImages.push(image)
-			  	});
-			  	this.images = tempImages
+			  	for(let i = 0; i < this.specificSection.info.images.length; i++){
+			  		this.images.push({
+	   					_id: this.specificSection.info.images[i]._id,
+		    			src: this.specificSection.info.images[i].src,
+		    			text: this.specificSection.info.images[i].text,
+		    			name: this.specificSection.info.images[i].name,
+		    			marker: null
+	   				})
+			  	}
 	   		} 
 	   	},
 	    methods: {
@@ -113,8 +132,9 @@
 	    			imagesToPush.push(
 	    				{
 		    				_id: image._id,
-		    				src: image.src,
-		    				text: document.getElementById(image._id).value
+		    				src: document.getElementById(image._id + 'img').src.replace(/^data:image\/(png|jpg);base64,/, ""),
+		    				text: document.getElementById(image._id + 'text').value,
+		    				name: document.getElementById(image._id + 'name').value
 	    				}	
 	    			)
 	    		})
@@ -131,6 +151,15 @@
 				}).catch(function (err) {
 				  console.log(err);
 				});
+				this.images.map(function (image) {
+					try {
+						if(image.marker.close) {
+							image.marker.close()
+						}	
+					}catch(err) {
+						console.log(err)
+					}
+				})
 				this.eventEmitter(0)
 	    	},
 	    	handleFileSelect: function() {
@@ -149,6 +178,15 @@
 			   };
 			},
 			deleteImage: function (image) {
+				this.images.map(function (image) {
+					try {
+						if(image.marker.close) {
+							image.marker.close()
+						}	
+					}catch(err) {
+						console.log(err)
+					}
+				})
 				let thisSectionId = this.specificSection._id
 				db.get(this.specificReport._id).then(function(doc) {
 					doc.section = doc.sections.map(function (section) {
@@ -166,7 +204,58 @@
 			},
 	    	eventEmitter: function(section) {
 	    		this.$emit("selected", section)
-	    	}
+	    	},
+			addArrow: function(image) {
+			    if (image.marker) {
+			    	image.marker.open();
+			        image.marker.addMarker(markerjs.ArrowMarker);
+			        document.getElementById(image._id + "editingPhotoDiv").style.display = "none"
+			        document.getElementById(image._id + "validatingPhotoDiv").style.display = ""
+			    } else {
+			    	var img = document.getElementById(image._id + 'img')
+	   				image.marker = new markerjs.MarkerArea(img);
+	   				image.marker.open();
+			        image.marker.addMarker(markerjs.ArrowMarker);
+			        document.getElementById(image._id + "editingPhotoDiv").style.display = "none"
+			        document.getElementById(image._id + "validatingPhotoDiv").style.display = ""
+			    }
+			},
+			addText: function(image) {
+				if (image.marker) {
+					image.marker.open();
+			        image.marker.addMarker(markerjs.TextMarker);
+			        document.getElementById(image._id + "editingPhotoDiv").style.display = "none"
+			        document.getElementById(image._id + "validatingPhotoDiv").style.display = ""
+			    } else {
+			    	var img = document.getElementById(image._id + 'img')
+	   				image.marker = new markerjs.MarkerArea(img);
+	   				image.marker.open();
+			        image.marker.addMarker(markerjs.TextMarker);
+			        document.getElementById(image._id + "editingPhotoDiv").style.display = "none"
+			        document.getElementById(image._id + "validatingPhotoDiv").style.display = ""
+			    }
+			},
+			deleteMarker: function(image) {
+			    if (image.marker) {
+			        image.marker.deleteActiveMarker();
+			        document.getElementById(image._id + "editingPhotoDiv").style.display = "inline"
+			        document.getElementById(image._id + "validatingPhotoDiv").style.display = "none"
+			    }
+			    image.marker.close()
+			},
+			render: function(image) {
+				var tempDataUrl = ""
+
+			    if (image.marker) {
+			        image.marker.render((dataUrl) => {
+			            document.getElementById(image._id + 'img').src = dataUrl
+			        });
+			        document.getElementById(image._id + "editingPhotoDiv").style.display = "inline"
+			        document.getElementById(image._id + "validatingPhotoDiv").style.display = "none"
+			    }
+			    image.marker.close()
+
+			},
 	    }
 	}
 </script>

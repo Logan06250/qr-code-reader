@@ -7,7 +7,7 @@
 			</a> 
 		</h3>
 		<div style="margin-top: 0px; margin-left: 10px">
-			<button type="button" @click="addSection(specificReport)" class="btn btn-info" >Add a section</button>
+			<button type="button" @click="addSection(specificReport)" class="btn btn-info" ><i class="far fa-edit"></i> Add a section</button>
 		</div>
 		<div class="alert alert-info alert-dismissible fade show" role="alert" id="infoDiv">
 			<strong><a id="strongAlertText"></a></strong> <a id="alertText"> You can create sections using the button above this alert.</a>
@@ -18,7 +18,7 @@
 		<div class="input-group" v-for="section in specificReport.sections" id="sectionDiv">
 		  	<a class="form-control" @click="eventEmitter(section)"> {{ section.name }}  </a>
 		  	<div class="input-group-append" id="button-addon4">
-				<button  class="btn btn-danger" @click="deleteSection(section)">Delete</button>
+				<button  class="btn btn-danger" @click="deleteSection(section)"><i class="fas fa-trash-alt"></i></button>
 		  	</div>
 		</div>
 
