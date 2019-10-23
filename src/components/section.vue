@@ -11,7 +11,7 @@
 			</a>  
 		</h3>
 
-
+		<canvas id="canvas"></canvas>
 		<label id="cmnLabel">Text:</label>
 
 		<span id="save" @click="startDictation('SpeachToText')" class="btn btn-circle btn-outline-danger fas fa-microphone" ></span>
@@ -19,7 +19,7 @@
      	<br>
      	<video ref="video" id="video" width="100%" height="100%" autoplay></video>
      	<center>
-     		<input class="inputfile" name="files" id="files" type="file" accept=".heic, .hevc, .heif, .pdf, .png, .gif, .jpg, .jpeg, .doc, .docx, application/msword, application/pdf" multiple @change="handleFileSelect()" capture>
+     		<input class="inputfile" name="files" id="files" type="file" @change="loadImage()">
      		<label id="snap" class="btn btn-lg btn-block btn-info" for="files"> Add Photo</label>
      	</center>
      	<br>
@@ -27,19 +27,21 @@
 	    	<div class="row">
 		  		<div class="col-md-6" v-for="image in images">
 					<div class="card border-secondary">
-					<div :id="image._id + 'markerControls'" class="input-group">
-						<input type="text" :id="image._id + 'name'" class="form-control" placeholder="Photo's name" :value="image.name">
-						<div class="input-group-append" id="button-addon4">
-							<div :id="image._id + 'editingPhotoDiv'">
-								<button @click="addText(image)" class="btn btn-outline-secondary"> <i class="fas fa-font"></i> </button>
-						    	<button @click="addArrow(image)" class="btn btn-outline-secondary"> <i class="fas fa-arrow-right"></i> </button>
-							</div>
-							<div :id="image._id + 'validatingPhotoDiv'" style="display: none">
-								<button @click="deleteMarker(image)" class="btn btn-outline-secondary"> <i class="fas fa-trash-alt"></i></button>
-						    	<button @click="render(image)" class="btn btn-outline-secondary"> <i class="fas fa-check"></i> </button>
-							</div>
+
+						<div :id="image._id + 'markerControls'" class="input-group">
+							<input type="text" :id="image._id + 'name'" class="form-control" placeholder="Photo's name" :value="image.name">
+							
+								<div :id="image._id + 'editingPhotoDiv'">
+									<button @click="addText(image)" class="btn btn-outline-info" style="margin-left: 5px"> <i class="fas fa-font"></i> </button>
+							    	<button @click="addArrow(image)" class="btn btn-outline-info"> <i class="fas fa-arrow-right"></i> </button>
+								</div>
+								<div :id="image._id + 'validatingPhotoDiv'" style="display: none">
+									<button @click="deleteMarker(image)" class="btn btn-danger" style="margin-left: 5px"> <i class="fas fa-trash-alt"></i></button>
+							    	<button @click="render(image)" class="btn btn-success"> <i class="fas fa-check"></i> </button>
+								</div>
+							
 						</div>
-					</div>
+
 					  	<img :src="'data:image/png;base64,' + image.src" class="card-img-top rounded" :id="image._id + 'img'">
 					  	<div class="card-body">
 						  	<label class="card-title">Photo information:</label>
@@ -53,7 +55,6 @@
 				</div>
 			</div>
 		</center>
-		<canvas id="canvas" width="100" height="100"></canvas>
 		<br>
 		<label id="cmnLabel">Summary:</label>
 		<span id="save" @click="startDictation('summaryImput')" class="btn btn-circle btn-outline-danger fas fa-microphone"></span>
@@ -160,6 +161,7 @@
 						console.log(err)
 					}
 				})
+				
 				this.eventEmitter(0)
 	    	},
 	    	handleFileSelect: function() {
@@ -256,13 +258,59 @@
 			    image.marker.close()
 
 			},
+			loadImage: function() {
+		        var input, file, fr, img;
+		        var imgToPush = this.images
+
+		        if (typeof window.FileReader !== 'function') {
+		            write("The file API isn't supported on this browser yet.");
+		            return;
+		        }
+
+		        input = document.getElementById('files');
+		        if (!input) {
+		            write("Um, couldn't find the imgfile element.");
+		        }
+		        else if (!input.files) {
+		            write("This browser doesn't seem to support the `files` property of file inputs.");
+		        }
+		        else if (!input.files[0]) {
+		            write("Please select a file before clicking 'Load'");
+		        }
+		        else {
+		            file = input.files[0];
+		            fr = new FileReader();
+		            fr.onload = createImage;
+		            fr.readAsDataURL(file);
+
+		        }
+		        function createImage() {
+		            img = new Image();
+		            img.onload = imageLoaded;
+		            img.src = fr.result;
+		        }
+		        function imageLoaded() {
+		            var canvas = document.getElementById("canvas")
+		            canvas.width = img.width;
+		            canvas.height = img.height;
+		            var ctx = canvas.getContext("2d");
+		            ctx.drawImage(img,0,0);
+		            imgToPush.push({src: canvas.toDataURL("image/png").replace(/^data:image\/(png|jpg);base64,/, ""), text: "", _id: new Date().toISOString()})
+
+		        }
+		        function write(msg) {
+		            var p = document.createElement('p');
+		            p.innerHTML = msg;
+		            document.body.appendChild(p);
+		        }
+		    }
 	    }
 	}
 </script>
 
 <style>
 
-	#video, #canvas {
+	#video, #canvas{
 		display: none;
 	}
 

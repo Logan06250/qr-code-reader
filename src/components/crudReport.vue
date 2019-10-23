@@ -425,16 +425,28 @@
 						doc.text(splitText, 40, currLine)
 		    			sectionLine++
 		    		})
-
-		    		//doc.output('dataurl')
-					//doc.save(report.name)
-
-					var string = doc.output('datauristring');
-					var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>"
-					var x = window.open();
-					x.document.open();
-					x.document.write(iframe);
-					x.document.close();
+		    		var pdfBase64 = doc.output('datauristring');
+		    		
+		    		Email.send({
+					    Host : "smtp.elasticemail.com",
+					    Username : "logan.lamouar@viacesi.fr",
+					    Password : "fd94ff19-229b-49bd-afcf-c9649c2f2f87",
+					    To : 'logan.lamouar@viacesi.fr',
+					    From : "logan.lamouar@viacesi.fr",
+					    Subject : "Mail with Attachments",
+					    Body : "Mail with Attachments",
+					    Attachments : [
+						{
+							name : "InspectorGadget.pdf",
+							data : pdfBase64
+						}]
+					}).then(function (message) {
+						if(message == "OK") {
+							alert("We successfully sended your PDF !")
+						} else {
+							alert("There was a problem during mail sending. Are you sure you are connected to internet ?")
+						}
+					});
 
 					function isEnoughtLine(line){ 
 						return ((line) >= doc.internal.pageSize.height)

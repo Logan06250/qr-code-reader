@@ -131,6 +131,8 @@
         } else {
           throw err;
         }
+      }).then(function () {
+        window.location.href= '#/'
       })
     }
   }
