@@ -49,7 +49,6 @@
 	    	closeAlert: function () {
 	    		document.getElementById("alertDiv").style.display = "none"
 	    		document.getElementById("infoDiv").style.display = "none"
-
 	    	},
 	    	addReport: function () {
 	    		document.getElementById("infoDiv").style.display = "none"
@@ -80,7 +79,7 @@
 					    this.reports.push(report)
 					}).catch((err) => {
 					    console.error(err)
-					})
+					}).then( e => this.emitReport(report))
 		        }
 	    	},
 	    	deleteReport: function (report) {
@@ -409,7 +408,6 @@
 								doc.setTextColor(47,79,79)
 								doc.setFontType("bold")
 								currLine = 45
-
 		    			}
 
 		    			currLine += 10
@@ -444,7 +442,7 @@
 						if(message == "OK") {
 							alert("We successfully sended your PDF !")
 						} else {
-							alert("There was a problem during mail sending. Are you sure you are connected to internet ?")
+							alert("There was a problem during mail sending. Please be sure to connect your device to internet ?")
 						}
 					});
 

@@ -44,6 +44,7 @@ import { MarkerArea } from 'markerjs';
 
 
 
+
 export default {
     name: 'App',
     data(){

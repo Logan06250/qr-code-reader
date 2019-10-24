@@ -74,7 +74,7 @@
 					  	console.log("Section added")
 					}).catch(function (err) {
 					  	console.log(err);
-					});
+					}).then( e => this.eventEmitter(section))
 		        }
 	    	},
 	    	deleteSection: function (section) {

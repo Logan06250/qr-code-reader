@@ -37,6 +37,7 @@
     "webpack-dev-server": "^3.8.0"
   },
   "dependencies": {
+    "artyom.js": "^1.0.6",
     "file-saver": "^2.0.2",
     "jspdf": "^1.5.3",
     "markerjs": "^1.2.1",
