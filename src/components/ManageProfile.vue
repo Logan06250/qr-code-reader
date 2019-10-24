@@ -20,11 +20,11 @@
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="firstName">First Name:</label>
-          <input type="text" class="form-control" id="firstName" placeholder="First Name">
+          <input type="text" class="form-control" @keypress="onlyText($event)" id="firstName" placeholder="First Name">
         </div>
         <div class="form-group col-md-6">
           <label for="lastName">Last Name:</label>
-          <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+          <input type="text" class="form-control" @keypress="onlyText($event)" id="lastName" placeholder="Last Name">
         </div>
         <div class="form-group col-md-6">
           <label for="inputEmail">Your Email:</label>
@@ -97,6 +97,15 @@
         evt = (evt) ? evt : window.event;
         var charCode = (evt.which) ? evt.which : evt.keyCode;
         if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+          evt.preventDefault();;
+        } else {
+          return true;
+        } 
+      },
+      onlyText: function(evt){
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (!(charCode > 31 && ((charCode >= 65 && charCode <= 90 ) || (charCode <= 122 && charCode >= 96) || charCode == 32 || (charCode >= 192 && charCode <= 402)))){
           evt.preventDefault();;
         } else {
           return true;

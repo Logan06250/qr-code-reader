@@ -442,6 +442,7 @@
 						if(message == "OK") {
 							alert("We successfully sended your PDF !")
 						} else {
+							console.log(message)
 							alert("There was a problem during mail sending. Please be sure to connect your device to internet ?")
 						}
 					});
