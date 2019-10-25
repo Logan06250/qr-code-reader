@@ -424,13 +424,14 @@
 		    			sectionLine++
 		    		})
 		    		var pdfBase64 = doc.output('datauristring');
-		    		
+		    		var mail = prompt("Please enter your Email")
+
 		    		Email.send({
-					    Host : "smtp.elasticemail.com",
-					    Username : "logan.lamouar@viacesi.fr",
-					    Password : "fd94ff19-229b-49bd-afcf-c9649c2f2f87",
-					    To : 'logan.lamouar@viacesi.fr',
-					    From : "logan.lamouar@viacesi.fr",
+					    Host : "smtp.sendgrid.com",
+					    Username : "quentinTerreta",
+					    Password : "password55!",
+					    To : mail,
+					    From :"quentin.guisiano@viacesi.fr",
 					    Subject : "Mail with Attachments",
 					    Body : "Mail with Attachments",
 					    Attachments : [
@@ -439,6 +440,7 @@
 							data : pdfBase64
 						}]
 					}).then(function (message) {
+						console.log(message)
 						if(message == "OK") {
 							alert("We successfully sended your PDF !")
 						} else {
