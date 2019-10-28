@@ -428,8 +428,8 @@
 
 		    		Email.send({
 					    Host : "smtp.sendgrid.com",
-					    Username : "quentinTerreta",
-					    Password : "password55!",
+					    Username : "apikey",
+					    Password : "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",
 					    To : mail,
 					    From :"quentin.guisiano@viacesi.fr",
 					    Subject : "Mail with Attachments",
