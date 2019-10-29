@@ -30,7 +30,7 @@
 	import { Slide } from 'vue-burger-menu'
 	
 	var db = new PouchDB("reports")
-	var remoteDb = new PouchDB("http://localhost:5984/reports")
+	//var remoteDb = new PouchDB("http://localhost:5984/reports")
 	var dbUser = new PouchDB("User")
 	console.log("Local database created and imported")
 
@@ -121,14 +121,14 @@
 					console.error(err)
 				})
 				
-				db.sync(remoteDb, {
+				/**db.sync(remoteDb, {    // synchro base de donnée
 					live: true,
 					retry: true
 				}).on('change', function (change) {
 				}).on('paused', function (info) {
 				}).on('active', function (info) {
 				}).on('error', function (err) {
-				});
+				});**/    
 			},
 	    	emitReport: function(report) {
 	    		this.$emit("selected", [1, report])
@@ -424,13 +424,14 @@
 		    			sectionLine++
 		    		})
 		    		var pdfBase64 = doc.output('datauristring');
-		    		
+		    		var mail = prompt("Please enter your Email")
+
 		    		Email.send({
-					    Host : "smtp.elasticemail.com",
-					    Username : "logan.lamouar@viacesi.fr",
-					    Password : "fd94ff19-229b-49bd-afcf-c9649c2f2f87",
-					    To : 'logan.lamouar@viacesi.fr',
-					    From : "logan.lamouar@viacesi.fr",
+					    Host : "smtp.sendgrid.com",
+					    Username : "apikey",
+					    Password : "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",
+					    To : mail,
+					    From :"quentin.guisiano@viacesi.fr",
 					    Subject : "Mail with Attachments",
 					    Body : "Mail with Attachments",
 					    Attachments : [
@@ -439,6 +440,7 @@
 							data : pdfBase64
 						}]
 					}).then(function (message) {
+						console.log(message)
 						if(message == "OK") {
 							alert("We successfully sent your PDF !")
 						} else {
