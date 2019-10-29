@@ -142,7 +142,6 @@
 	    			document.getElementById("alertText").text = "You should fill informations about your profile before."
 	    			document.getElementById("alertDiv").style.display = "block"
 	    		}else if(report.property.length == 0){
-	    			console.log("yo")
 	    			document.getElementById("alertText").text = "You should fill informations about the property before."
 	    			document.getElementById("alertDiv").style.display = "block"
 	    		} else {
@@ -321,36 +320,41 @@
 		            	doc.setFontSize(50)
 						doc.text( letters[sectionLine - 1] , 15, 33)
 
-						doc.setFontSize(20)
-						doc.setTextColor(47,79,79)
-						doc.setFontType("bold")
-						doc.text("Informations taken", 40, 50)
-						var currLine = 65
+						try {
+							doc.setFontSize(20)
+							doc.setTextColor(47,79,79)
+							doc.setFontType("bold")
+							doc.text("Informations taken", 40, 50)
+							var currLine = 65
 
-						doc.setTextColor(0,0,0)
-						doc.setFontSize(12)
-						doc.setFontType("normal")
-						splitText = doc.splitTextToSize(section.info.text, 140)
-						currLine += (splitText.length * 4) + 10
-						doc.text(splitText, 40, 65)
+							doc.setTextColor(0,0,0)
+							doc.setFontSize(12)
+							doc.setFontType("normal")
+							splitText = doc.splitTextToSize(section.info.text, 140)
+							currLine += (splitText.length * 4) + 10
+							doc.text(splitText, 40, 65)
 
-						if(isEnoughtLine(currLine)){ 
-		    					doc.addPage()
-		    					doc.setFontType("bold")
+							if(isEnoughtLine(currLine)){ 
+			    				doc.addPage()
+			    				doc.setFontType("bold")
 								doc.setDrawColor(192,192,192)
 								doc.setLineWidth(1.5)
 								doc.line(40, 35, 200, 35)
 								doc.setFontSize(30)
 								doc.setTextColor(47,79,79)
-				            	doc.text(section.name, 40, 30)
-				            	doc.setTextColor(192,192,192)
-				            	doc.setFontSize(50)
+					            doc.text(section.name, 40, 30)
+					            doc.setTextColor(192,192,192)
+					            doc.setFontSize(50)
 								doc.text( letters[sectionLine - 1] , 15, 33)
 								doc.setFontSize(20)
 								doc.setTextColor(47,79,79)
 								doc.setFontType("bold")
 								currLine = 45
-		    			}
+			    			}
+						} catch (e){
+							console.log(e)
+						}
+						
 
 						doc.setFontSize(20)
 						doc.setTextColor(47,79,79)
@@ -378,44 +382,53 @@
 		    				}
 		    				doc.addImage(image.src,"jpeg", 40, currLine, 70, 70)
 
-		    				doc.setTextColor(47,79,79)
-							doc.setFontSize(10)
+		    				try {
+		    					doc.setTextColor(47,79,79)
+								doc.setFontSize(10)
 
-							splitText = doc.splitTextToSize(image.text, 75)
+								splitText = doc.splitTextToSize(image.text, 75)
 
-							doc.text(splitText, 120, currLine)
-							if(splitText.length * 4 > 76) {
-								currLine += splitText.length * 5
-							} else {
-								currLine += 76
-							}
+								doc.text(splitText, 120, currLine)
+								if(splitText.length * 4 > 76) {
+									currLine += splitText.length * 5
+								} else {
+									currLine += 76
+								}
+		    				} catch (e) {
+		    					console.log(e)
+		    				}
+		    				
 		    			})
-						splitText = doc.splitTextToSize(section.info.summary, 230)
 
-		    			if(isEnoughtLine(currLine + 35 + (splitText.length * 5))){ 
-		    					doc.addPage()
-		    					doc.setFontType("bold")
-								doc.setDrawColor(192,192,192)
-								doc.setLineWidth(1.5)
-								doc.line(40, 35, 200, 35)
-								doc.setFontSize(30)
-								doc.setTextColor(47,79,79)
-				            	doc.text(section.name, 40, 30)
-				            	doc.setTextColor(192,192,192)
-				            	doc.setFontSize(50)
-								doc.text( letters[sectionLine - 1] , 15, 33)
-								doc.setFontSize(20)
-								doc.setTextColor(47,79,79)
-								doc.setFontType("bold")
-								currLine = 45
+		    			try {
+		    				splitText = doc.splitTextToSize(section.info.summary, 230)
+
+			    			if(isEnoughtLine(currLine + 35 + (splitText.length * 5))){ 
+			    					doc.addPage()
+			    					doc.setFontType("bold")
+									doc.setDrawColor(192,192,192)
+									doc.setLineWidth(1.5)
+									doc.line(40, 35, 200, 35)
+									doc.setFontSize(30)
+									doc.setTextColor(47,79,79)
+					            	doc.text(section.name, 40, 30)
+					            	doc.setTextColor(192,192,192)
+					            	doc.setFontSize(50)
+									doc.text( letters[sectionLine - 1] , 15, 33)
+									doc.setFontSize(20)
+									doc.setTextColor(47,79,79)
+									doc.setFontType("bold")
+									currLine = 45
+			    			}
+			    			currLine += 10
+							doc.setFontSize(20)
+							doc.setTextColor(47,79,79)
+							doc.setFontType("bold")
+							doc.text("Summary", 40, currLine)
+							currLine += 15
+		    			} catch (e) {
+		    				console.log(e)
 		    			}
-
-		    			currLine += 10
-						doc.setFontSize(20)
-						doc.setTextColor(47,79,79)
-						doc.setFontType("bold")
-						doc.text("Summary", 40, currLine)
-						currLine += 15
 
 						doc.setTextColor(0,0,0)
 						doc.setFontSize(12)
