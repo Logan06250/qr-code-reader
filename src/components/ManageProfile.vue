@@ -157,7 +157,6 @@
     -o-background-size: cover;
     background-size: cover;
     margin-top: 0%;
-    width:100%;
     height:62px;
     z-index:10;
     display:block;

@@ -297,7 +297,7 @@
 					doc.text( "Year the property was built ", 20, 78)
 					doc.text( "Year the property was extended ", 20, 91)
 					doc.text( "Year the property was converted ", 20, 104)
-					doc.text( "Information about flats", 20, 127)
+					doc.text( "Information about property", 20, 127)
 
 					doc.setTextColor(0,0,0)
 					doc.text(report.property.typeOfProperty, 65, 65)
@@ -440,7 +440,7 @@
 						}]
 					}).then(function (message) {
 						if(message == "OK") {
-							alert("We successfully sended your PDF !")
+							alert("We successfully sent your PDF !")
 						} else {
 							console.log(message)
 							alert("There was a problem during mail sending. Please be sure to connect your device to internet ?")
