@@ -223,7 +223,7 @@
 					doc.setTextColor(47,79,79)
 					doc.setFontSize(12)
 
-					var splitText = doc.splitTextToSize(" Emil it's your job to find some to text to put here", 140)
+					var splitText = doc.splitTextToSize("This Condition Report is produced by an RICS surveyor who provides an objective opinion about the condition of the property at the time of inspection.", 140)
 
 					doc.text(splitText, 40, 60)
 
