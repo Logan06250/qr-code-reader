@@ -30,7 +30,7 @@
 	import { Slide } from 'vue-burger-menu'
 	
 	var db = new PouchDB("reports")
-	var remoteDb = new PouchDB("http://localhost:5984/reports")
+	//var remoteDb = new PouchDB("http://localhost:5984/reports")
 	var dbUser = new PouchDB("User")
 	console.log("Local database created and imported")
 
@@ -121,14 +121,14 @@
 					console.error(err)
 				})
 				
-				db.sync(remoteDb, {
+				/**db.sync(remoteDb, {    // synchro base de donnée
 					live: true,
 					retry: true
 				}).on('change', function (change) {
 				}).on('paused', function (info) {
 				}).on('active', function (info) {
 				}).on('error', function (err) {
-				});
+				});**/    
 			},
 	    	emitReport: function(report) {
 	    		this.$emit("selected", [1, report])
@@ -429,7 +429,7 @@
 		    		Email.send({
 					    Host : "smtp.sendgrid.com",
 					    Username : "apikey",
-					    Password : "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",
+					    Password : "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",
 					    To : mail,
 					    From :"quentin.guisiano@viacesi.fr",
 					    Subject : "Mail with Attachments",
