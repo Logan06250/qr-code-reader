@@ -93,7 +93,7 @@
 				})
 				this.reports.splice(del, 1)
 				if(this.reports.length == 0){
-		        	document.getElementById("strongAlertText").text = "You didn't have any report !"
+		        	document.getElementById("strongAlertText").text = "You haven’t created any report yet !"
 		        	document.getElementById("infoText").text = "You can create one using the button above this alert."
 					document.getElementById("infoDiv").style.display = "block"
 				}
@@ -104,7 +104,7 @@
 				        this.reports.push(e.doc)
 				    });
 				    if(doc.rows.length == 0){
-			        	document.getElementById("strongAlertText").text = "You didn't have any report !"
+			        	document.getElementById("strongAlertText").text = "You haven’t created any report yet !"
 			        	document.getElementById("infoText").text = "You can create one using the button above this alert."
 				    	document.getElementById("infoDiv").style.display = "block"
 				    }
@@ -223,7 +223,7 @@
 					doc.setTextColor(47,79,79)
 					doc.setFontSize(12)
 
-					var splitText = doc.splitTextToSize("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", 140)
+					var splitText = doc.splitTextToSize(" Emil it's your job to find some to text to put here", 140)
 
 					doc.text(splitText, 40, 60)
 
@@ -455,7 +455,7 @@
 					}).then(function (message) {
 						console.log(message)
 						if(message == "OK") {
-							alert("We successfully sent your PDF !")
+							alert("We have successfully sent a PDF to your E-mail.")
 						} else {
 							console.log(message)
 							alert("There was a problem during mail sending. Please be sure to connect your device to internet ?")

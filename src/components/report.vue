@@ -38,7 +38,7 @@
 	   	mounted:function(){
 	   		db.get(this.specificReport._id).then(function(doc) {
 				if(doc.sections.length == 0){
-					document.getElementById("strongAlertText").text = "You didn't have any section !"
+					document.getElementById("strongAlertText").text = "You haven’t created any section yet !"
 		        	document.getElementById("alertText").text = "You can create one using the button above this alert."
 				   	document.getElementById("infoDiv").style.display = "block"
 				}
@@ -87,7 +87,7 @@
 				})
 				this.specificReport.sections = this.specificReport.sections.filter((value, index) => value._id != section._id)
 				if(this.specificReport.sections.length == 0){
-					document.getElementById("strongAlertText").text = "You didn't have any section !"
+					document.getElementById("strongAlertText").text = "You haven’t created any section yet !"
 		        	document.getElementById("alertText").text = "You can create one using the button above this alert."
 					document.getElementById("infoDiv").style.display = "block"
 				}

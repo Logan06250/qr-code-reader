@@ -97,7 +97,8 @@
     newProperty: function(){
       var propertySubmitted = {
             propertyAdress: document.getElementById("propertyAdress").value,
-            clientName: document.getElementById("clientName").value,
+            clientName: document.getEle
+            mentById("clientName").value,
             dateOfInspection: document.getElementById("dateOfInspection").value,
             typeOfProperty: document.getElementById("typeOfProperty").value,
             YearThePropertyWasBuilt: document.getElementById("YearThePropertyWasBuilt").value,
