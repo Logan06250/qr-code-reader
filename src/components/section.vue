@@ -15,6 +15,8 @@
 		<label id="cmnLabel">Text:</label>
 
 		<span id="save" @click="startDictation('SpeachToText')" class="btn btn-circle btn-outline-danger fas fa-microphone" ></span>
+		<label id="SpeachToTextlabel"  class="badge badge-danger" ></label>
+
      	<textarea type="text" class="form-control text-justify" id="SpeachToText" placeholder="Enter your text here" rows="5"> </textarea>
      	<br>
      	<video ref="video" id="video" width="100%" height="100%" autoplay></video>
@@ -46,6 +48,7 @@
 					  	<div class="card-body">
 						  	<label class="card-title">Photo information:</label>
 						  	<span id="save" @click="startDictation(image._id + 'text')" class="btn btn-circle btn-outline-danger fas fa-microphone" ></span>
+						  	<label :id="image._id + 'text' + 'label'"  class="badge badge-danger" ></label>
 						  	<div>
 						  		<textarea type="text" :id="image._id + 'text'" class="form-control text-justify" rows="5" placeholder="Enter your text here"> {{ image.text }} </textarea>
 						  	</div>
@@ -58,6 +61,8 @@
 		<br>
 		<label id="cmnLabel">Summary:</label>
 		<span id="save" @click="startDictation('summaryImput')" class="btn btn-circle btn-outline-danger fas fa-microphone"></span>
+		<label id="summaryImputlabel"  class="badge badge-danger" ></label>
+
      	<textarea type="text" class="form-control text-justify" id="summaryImput" placeholder="Enter your sumary here" rows="5"> </textarea>
 		<button  id="saveButton" @click="saveButton(specificSection)" class="btn btn-lg btn-block btn-info">Save all informations</button>
 	</div>
@@ -112,15 +117,21 @@
 	    	startDictation: function (imputText) {
 	    		if (window.hasOwnProperty('webkitSpeechRecognition')) {
 			      var recognition = new webkitSpeechRecognition();
+			      document.getElementById(imputText + "label").innerHTML = ""
+			      recognition.stop();
+
 			      recognition.continuous = false;
 			      recognition.interimResults = false;
 			      recognition.lang = "en-US";
 			      recognition.start();
+			      document.getElementById(imputText + "label").innerHTML = "listening..."
 			      recognition.onresult = function(e) {
 			        document.getElementById(imputText).value += " " + e.results[0][0].transcript;
+			        document.getElementById(imputText + "label").innerHTML = ""
 			        recognition.stop();
 			      };
 			      recognition.onerror = function(e) {
+			      	document.getElementById(imputText + "label").innerHTML = ""
 			        recognition.stop();
 			      }
 			    }
