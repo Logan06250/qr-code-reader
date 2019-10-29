@@ -440,18 +440,17 @@
 		    		var mail = prompt("Please enter your Email")
 
 		    		Email.send({
-					    Host : "smtp.sendgrid.com",
-					    Username : "apikey",
-					    Password : "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",
+		    			SecureToken : "9700e5f4-2f14-4fab-b886-7b09d63427ad",
 					    To : mail,
-					    From :"quentin.guisiano@viacesi.fr",
-					    Subject : "Mail with Attachments",
-					    Body : "Mail with Attachments",
+					    From :"quentinterreta@gmail.com",
+					    Subject : "Your inspection",
+					    Body : "",
 					    Attachments : [
 						{
 							name : "InspectorGadget.pdf",
 							data : pdfBase64
 						}]
+					
 					}).then(function (message) {
 						console.log(message)
 						if(message == "OK") {
